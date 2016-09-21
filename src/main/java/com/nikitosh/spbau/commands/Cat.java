@@ -3,10 +3,7 @@ package com.nikitosh.spbau.commands;
 import com.nikitosh.spbau.Environment;
 import com.nikitosh.spbau.SyntaxErrorException;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -19,23 +16,25 @@ public class Cat implements Command {
             throws SyntaxErrorException {
         PipedOutputStream outputStream = new PipedOutputStream();
 
-        if (args.size() == 0) {
+        if (args.isEmpty()) {
             try {
                 outputStream.connect(inputStream);
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
         } else {
-            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+            StringBuilder stringBuilder = new StringBuilder();
             for (String arg : args) {
                 try {
-                    dataOutputStream.writeUTF(new String(Files.readAllBytes(Paths.get(arg)), StandardCharsets.UTF_8));
+                    stringBuilder.append(new String(Files.readAllBytes(Paths.get(arg)), StandardCharsets.UTF_8));
                 } catch (InvalidPathException exception) {
                     throw new SyntaxErrorException("cat", arg + ": no such file");
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
             }
+            PrintWriter writer = new PrintWriter(new BufferedOutputStream(outputStream));
+            writer.print(stringBuilder.toString());
         }
         return outputStream;
     }
