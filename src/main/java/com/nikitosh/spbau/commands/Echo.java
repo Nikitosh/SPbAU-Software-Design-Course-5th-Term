@@ -14,18 +14,9 @@ public class Echo implements Command {
     public PipedOutputStream execute(List<String> args, PipedInputStream inputStream, Environment environment) throws SyntaxErrorException {
         PipedOutputStream outputStream = new PipedOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
-        for (int i = 0; i < args.size(); i++) {
-            try {
-                dataOutputStream.writeUTF(args.get(i));
-                if (i != args.size() - 1) {
-                    dataOutputStream.writeUTF(" ");
-                }
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-        }
+        String joinedString = String.join(" ", args) + "\n";
         try {
-            dataOutputStream.writeUTF("\n");
+            dataOutputStream.writeUTF(joinedString);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
