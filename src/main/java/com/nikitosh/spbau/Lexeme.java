@@ -6,7 +6,6 @@ import java.util.Map;
 public class Lexeme {
     public enum Type {
         TEXT,
-        SPACE,
         PIPE,
         SINGLE_QUOTE,
         DOUBLE_QUOTE,
@@ -15,7 +14,6 @@ public class Lexeme {
     }
 
     private static final Map<Character, Type> TYPES = new HashMap<Character, Type>() {{
-        put(' ',  Type.SPACE);
         put('|',  Type.PIPE);
         put('\'', Type.SINGLE_QUOTE);
         put('"',  Type.DOUBLE_QUOTE);
