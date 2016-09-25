@@ -71,6 +71,28 @@ public class Lexer {
         return lexemes;
     }
 
+    public String substitute(String content, Environment environment) {
+        int length = content.length();
+        String result = "";
+        for (int i = 0; i < length;) {
+            if (content.charAt(i) != SUBSTITUTION_SYMBOL) {
+                result += content.charAt(i);
+            }
+            int j = i + 1;
+            String variable = "";
+            while (j < length && Character.isLetterOrDigit(content.charAt(j))) {
+                variable += content.charAt(j++);
+            }
+            if (!variable.isEmpty()) {
+                result += environment.getValue(variable);
+            } else {
+                result += content.charAt(i);
+            }
+            i = j;
+        }
+        return result;
+    }
+
     private Lexeme getLexeme(String content, boolean isAssignment, boolean isSubstitution) {
         if (isSubstitution) {
             return new Lexeme(Lexeme.Type.SUBSTITUTION, content);
