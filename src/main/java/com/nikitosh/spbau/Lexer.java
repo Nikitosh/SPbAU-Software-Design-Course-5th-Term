@@ -71,7 +71,30 @@ public class Lexer {
         return lexemes;
     }
 
-    public String substitute(String content, Environment environment) {
+    public List<Lexeme> substitute(List<Lexeme> lexemes, Environment environment) {
+        List<Lexeme> substitutedLexemes = new ArrayList<>();
+        for (Lexeme lexeme : lexemes) {
+            if (lexeme.getType() == Lexeme.Type.SINGLE_QUOTE) {
+                String content = lexeme.getContent();
+                substitutedLexemes.add(new Lexeme(Lexeme.Type.TEXT, content.substring(1, content.length() - 1)));
+                continue;
+            }
+            if (lexeme.getType() == Lexeme.Type.DOUBLE_QUOTE) {
+                String content = lexeme.getContent();
+                content = content.substring(1, content.length());
+                substitutedLexemes.add(new Lexeme(Lexeme.Type.TEXT, substitute(content, environment)));
+                continue;
+            }
+            if (lexeme.getType() == Lexeme.Type.SUBSTITUTION) {
+                substitutedLexemes.add(new Lexeme(Lexeme.Type.TEXT, substitute(lexeme.getContent(), environment)));
+                continue;
+            }
+            substitutedLexemes.add(lexeme);
+        }
+        return substitutedLexemes;
+    }
+
+    private String substitute(String content, Environment environment) {
         int length = content.length();
         String result = "";
         for (int i = 0; i < length;) {
