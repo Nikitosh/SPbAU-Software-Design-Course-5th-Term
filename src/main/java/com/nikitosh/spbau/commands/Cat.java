@@ -2,6 +2,7 @@ package com.nikitosh.spbau.commands;
 
 import com.nikitosh.spbau.Environment;
 import com.nikitosh.spbau.SyntaxErrorException;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -12,30 +13,20 @@ import java.util.List;
 
 public class Cat implements Command {
     @Override
-    public PipedOutputStream execute(List<String> args, PipedInputStream inputStream, Environment environment)
-            throws SyntaxErrorException {
-        PipedOutputStream outputStream = new PipedOutputStream();
-
+    public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
+            throws SyntaxErrorException, IOException {
         if (args.isEmpty()) {
-            try {
-                outputStream.connect(inputStream);
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+            return inputStream;
         } else {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder executionResult = new StringBuilder();
             for (String arg : args) {
                 try {
-                    stringBuilder.append(new String(Files.readAllBytes(Paths.get(arg)), StandardCharsets.UTF_8));
+                    executionResult.append(new String(Files.readAllBytes(Paths.get(arg)), StandardCharsets.UTF_8));
                 } catch (InvalidPathException exception) {
                     throw new SyntaxErrorException("cat", arg + ": no such file");
-                } catch (IOException exception) {
-                    exception.printStackTrace();
                 }
             }
-            PrintWriter writer = new PrintWriter(new BufferedOutputStream(outputStream));
-            writer.print(stringBuilder.toString());
+            return IOUtils.toInputStream(executionResult, "UTF-8");
         }
-        return outputStream;
     }
 }

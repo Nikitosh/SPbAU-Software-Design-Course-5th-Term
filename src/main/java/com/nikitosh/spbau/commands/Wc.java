@@ -6,9 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintWriter;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -36,22 +34,18 @@ public class Wc implements Command {
             bytesNumber += statistics.wordsNumber;
         }
 
-        public void print(PrintWriter writer) {
-            writer.print(newlinesNumber + " " + wordsNumber + " " + bytesNumber + "\n");
+        @Override
+        public String toString() {
+            return newlinesNumber + " " + wordsNumber + " " + bytesNumber + "\n";
         }
     }
 
     @Override
-    public PipedOutputStream execute(List<String> args, PipedInputStream inputStream, Environment environment)
-            throws SyntaxErrorException {
-        PipedOutputStream outputStream = new PipedOutputStream();
-        PrintWriter writer = new PrintWriter(outputStream);
+    public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
+            throws SyntaxErrorException, IOException {
+        StringBuilder executionResult = new StringBuilder();
         if (args.isEmpty()) {
-            try {
-                getStringStatistics(IOUtils.toString(inputStream)).print(writer);
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+            executionResult.append(getStringStatistics(IOUtils.toString(inputStream)).toString());
         } else {
             Statistics totalStatistics = new Statistics();
             for (String arg : args) {
@@ -59,18 +53,16 @@ public class Wc implements Command {
                     Statistics currentStatistics = getStringStatistics(new String(Files.readAllBytes(Paths.get(arg)),
                             StandardCharsets.UTF_8));
                     totalStatistics.add(currentStatistics);
-                    currentStatistics.print(writer);
+                    executionResult.append(currentStatistics.toString());
                 } catch (InvalidPathException exception) {
                     throw new SyntaxErrorException("wc", arg + ": no such file");
-                } catch (IOException exception) {
-                    exception.printStackTrace();
                 }
             }
             if (args.size() > 1) {
-                totalStatistics.print(writer);
+                executionResult.append(totalStatistics.toString());
             }
         }
-        return outputStream;
+        return IOUtils.toInputStream(executionResult, "UTF-8");
     }
 
     private Statistics getStringStatistics(String content) {

@@ -5,27 +5,21 @@ import com.nikitosh.spbau.SyntaxErrorException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class ExternalCall implements Command {
 
     @Override
-    public PipedOutputStream execute(List<String> args, PipedInputStream inputStream, Environment environment) throws SyntaxErrorException {
-        PipedOutputStream outputStream = new PipedOutputStream();
+    public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
+            throws SyntaxErrorException, IOException {
+        Process process = new ProcessBuilder(args).start();
+        IOUtils.copy(inputStream, process.getOutputStream());
         try {
-            Process process = new ProcessBuilder(args).start();
-            IOUtils.copy(inputStream, process.getOutputStream());
-            try {
-                process.waitFor();
-            } catch (InterruptedException exception) {
-                exception.printStackTrace();
-            }
-            IOUtils.copy(process.getInputStream(), outputStream);
-        } catch (IOException exception) {
+            process.waitFor();
+        } catch (InterruptedException exception) {
             exception.printStackTrace();
         }
-        return outputStream;
+        return process.getInputStream();
     }
 }
