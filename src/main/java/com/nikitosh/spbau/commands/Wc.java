@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class Wc implements Command {
         public void add(Statistics statistics) {
             newlinesNumber += statistics.newlinesNumber;
             wordsNumber += statistics.wordsNumber;
-            bytesNumber += statistics.wordsNumber;
+            bytesNumber += statistics.bytesNumber;
         }
 
         @Override
@@ -55,7 +56,7 @@ public class Wc implements Command {
                             Files.readAllBytes(Paths.get(arg)), StandardCharsets.UTF_8));
                     totalStatistics.add(currentStatistics);
                     executionResult.append(currentStatistics.toString());
-                } catch (InvalidPathException exception) {
+                } catch (InvalidPathException | NoSuchFileException exception) {
                     throw new SyntaxErrorException("wc", arg + ": no such file");
                 }
             }
