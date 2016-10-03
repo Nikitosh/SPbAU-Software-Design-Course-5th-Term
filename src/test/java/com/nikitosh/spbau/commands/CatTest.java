@@ -38,7 +38,7 @@ public class CatTest {
     @Test
     public void testOneFile() throws IOException {
         String content = CONTENT;
-        File file = createTemporaryFileWithContent("file.txt", content);
+        File file = createTemporaryFileWithContent(testFolder, "file.txt", content);
         Environment environment = mock(Environment.class);
         InputStream inputStream = new Cat().execute(
                 Arrays.asList(file.getPath()), new ByteArrayInputStream("text".getBytes()), environment);
@@ -52,7 +52,7 @@ public class CatTest {
         List<File> files = new ArrayList<>();
         for (int i = 0; i < FILES_NUMBER; i++) {
             String content = String.valueOf(i);
-            files.add(createTemporaryFileWithContent("file" + content + ".txt", content));
+            files.add(createTemporaryFileWithContent(testFolder, "file" + content + ".txt", content));
             totalContent.append(content);
         }
         Environment environment = mock(Environment.class);
@@ -68,8 +68,9 @@ public class CatTest {
         new Cat().execute(Arrays.asList("FakeFileName"), Utilities.getEmptyInputStream(), environment);
     }
 
-    private File createTemporaryFileWithContent(String fileName, String content) throws IOException {
-        File tempFile = testFolder.newFile(fileName);
+    private File createTemporaryFileWithContent(TemporaryFolder folder, String fileName, String content)
+            throws IOException {
+        File tempFile = folder.newFile(fileName);
         PrintStream outputStream = new PrintStream(new FileOutputStream(tempFile));
         outputStream.print(content);
         outputStream.close();
