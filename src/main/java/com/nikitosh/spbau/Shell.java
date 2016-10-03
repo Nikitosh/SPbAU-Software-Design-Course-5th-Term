@@ -1,12 +1,13 @@
 package com.nikitosh.spbau;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 import java.util.List;
 
 public class Shell {
     private static final String EXIT = "exit";
+    private static final String NEW_LINE_SEPARATOR = "$";
 
     private Environment environment = new Environment();
     private Lexer lexer = new Lexer();
@@ -16,6 +17,7 @@ public class Shell {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Shell shell = new Shell();
         while (true) {
+            System.out.print(NEW_LINE_SEPARATOR);
             try {
                 String commandLine = reader.readLine();
                 if (commandLine.equals(EXIT)) {
@@ -36,6 +38,12 @@ public class Shell {
     private void process(String commandLine) throws SyntaxErrorException {
         List<Lexeme> lexemes = lexer.parse(commandLine);
         lexemes = lexer.substitute(lexemes, environment);
-        parser.execute(lexemes, environment);
+        InputStream inputStream = parser.execute(lexemes, environment);
+        PrintStream outputStream = System.out;
+        try {
+            outputStream.print(IOUtils.toString(inputStream, "UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

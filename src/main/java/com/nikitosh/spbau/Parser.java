@@ -25,7 +25,7 @@ public class Parser {
                     if (separatorPredicate.test(elem)) {
                         l.add(new ArrayList<>());
                     } else {
-                        l.get(l.size()-1).add(elem);
+                        l.get(l.size() - 1).add(elem);
                     }
                 },
                 (l1, l2) -> {
@@ -36,7 +36,7 @@ public class Parser {
         );
     }
 
-    public void execute(List<Lexeme> lexemes, Environment environment) {
+    public InputStream execute(List<Lexeme> lexemes, Environment environment) {
         List<List<Lexeme>> splittedLexemes = lexemes.stream().collect(splitBySeparator(
                 lexeme -> lexeme.getType() == Lexeme.Type.PIPE));
         InputStream inputStream = System.in;
@@ -56,6 +56,7 @@ public class Parser {
                     } catch (IOException exception) {
                         exception.printStackTrace();
                     }
+                    continue;
                 }
                 Command command;
                 List<Lexeme> arguments;
@@ -79,5 +80,6 @@ public class Parser {
         } catch (SyntaxErrorException exception) {
             System.err.println(exception.getMessage());
         }
+        return inputStream;
     }
 }
