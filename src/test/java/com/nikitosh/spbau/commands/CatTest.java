@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 
 public class CatTest {
     private static final int FILES_NUMBER = 20;
+    private static final String FAKE_FILE_NAME = "FakeFileName";
     private static final String CONTENT = "line1\nline2 line2\n";
 
     @Rule
@@ -65,7 +66,7 @@ public class CatTest {
     @Test(expected = SyntaxErrorException.class)
     public void testNoSuchFile() throws IOException {
         Environment environment = mock(Environment.class);
-        new Cat().execute(Arrays.asList("FakeFileName"), Utilities.getEmptyInputStream(), environment);
+        new Cat().execute(Arrays.asList(FAKE_FILE_NAME), Utilities.getEmptyInputStream(), environment);
     }
 
     private File createTemporaryFileWithContent(TemporaryFolder folder, String fileName, String content)
