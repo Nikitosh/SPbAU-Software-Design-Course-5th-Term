@@ -5,6 +5,7 @@ import com.nikitosh.spbau.SyntaxErrorException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -62,7 +63,7 @@ public class Wc implements Command {
                 executionResult.append(totalStatistics.toString());
             }
         }
-        return IOUtils.toInputStream(executionResult, "UTF-8");
+        return new ByteArrayInputStream(executionResult.toString().getBytes());
     }
 
     private Statistics getStringStatistics(String content) {

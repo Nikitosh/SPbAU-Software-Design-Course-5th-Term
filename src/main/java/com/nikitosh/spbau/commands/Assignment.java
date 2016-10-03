@@ -2,7 +2,7 @@ package com.nikitosh.spbau.commands;
 
 import com.nikitosh.spbau.Environment;
 import com.nikitosh.spbau.SyntaxErrorException;
-import org.apache.commons.io.IOUtils;
+import com.nikitosh.spbau.Utilities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +17,6 @@ public class Assignment implements Command {
                     + args.size());
         }
         environment.setValue(args.get(0), args.get(1));
-        return IOUtils.toInputStream("", "UTF-8");
+        return Utilities.getEmptyInputStream();
     }
 }

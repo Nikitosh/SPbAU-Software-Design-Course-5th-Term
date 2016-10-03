@@ -1,6 +1,6 @@
 package com.nikitosh.spbau;
 
-public class SyntaxErrorException extends Exception {
+public class SyntaxErrorException extends RuntimeException {
     private String command;
     private String message;
 
