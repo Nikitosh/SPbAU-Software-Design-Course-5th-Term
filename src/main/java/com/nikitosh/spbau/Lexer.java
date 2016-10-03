@@ -71,7 +71,7 @@ public class Lexer {
         return lexemes;
     }
 
-    public List<Lexeme> substitute(List<Lexeme> lexemes, Environment environment) {
+    public List<Lexeme> substitute(List<Lexeme> lexemes, EnvironmentImpl environment) {
         List<Lexeme> substitutedLexemes = new ArrayList<>();
         for (Lexeme lexeme : lexemes) {
             if (lexeme.getType() == Lexeme.Type.SINGLE_QUOTE) {
@@ -94,7 +94,7 @@ public class Lexer {
         return substitutedLexemes;
     }
 
-    private String substitute(String content, Environment environment) {
+    private String substitute(String content, EnvironmentImpl environment) {
         int length = content.length();
         String result = "";
         for (int i = 0; i < length;) {

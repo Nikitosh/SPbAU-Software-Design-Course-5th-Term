@@ -4,7 +4,8 @@ import com.nikitosh.spbau.Environment;
 import com.nikitosh.spbau.SyntaxErrorException;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.List;
 

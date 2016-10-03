@@ -38,7 +38,7 @@ public class Parser {
         );
     }
 
-    public InputStream execute(List<Lexeme> lexemes, Environment environment) {
+    public InputStream execute(List<Lexeme> lexemes, EnvironmentImpl environment) {
         List<List<Lexeme>> splittedLexemes = lexemes.stream().collect(splitBySeparator(
                 lexeme -> lexeme.getType() == Lexeme.Type.PIPE));
         InputStream inputStream = System.in;

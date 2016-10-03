@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.List;
 
 public class ExternalCall implements Command {
-
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
             throws SyntaxErrorException, IOException {
