@@ -10,12 +10,14 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Parser {
-    private static final Map<String, Command> COMMANDS = new HashMap<String, Command>() {{
-        put("cat", new Cat());
-        put("echo", new Echo());
-        put("pwd", new Pwd());
-        put("wc", new Wc());
-    }};
+    private static final Map<String, Command> COMMANDS = new HashMap<String, Command>() {
+        {
+            put("cat", new Cat());
+            put("echo", new Echo());
+            put("pwd", new Pwd());
+            put("wc", new Wc());
+        }
+    };
 
     private static Collector<Lexeme, List<List<Lexeme>>, List<List<Lexeme>>> splitBySeparator(
             Predicate<Lexeme> separatorPredicate) {

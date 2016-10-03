@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Environment {
-    Map<String, String> variableValues = new HashMap<>();
+    private Map<String, String> variableValues = new HashMap<>();
 
     public String getValue(String variable) {
         if (variableValues.containsKey(variable)) {

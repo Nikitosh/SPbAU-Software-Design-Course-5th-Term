@@ -28,8 +28,7 @@ public class Shell {
                 } catch (SyntaxErrorException exception) {
                     System.err.println(exception.getMessage());
                 }
-            }
-            catch (IOException exception) {
+            } catch (IOException exception) {
                 exception.printStackTrace();
             }
         }

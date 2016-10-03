@@ -19,10 +19,10 @@ public class Wc implements Command {
         private int wordsNumber = 0;
         private int bytesNumber = 0;
 
-        public Statistics() {
+        Statistics() {
         }
 
-        public Statistics(int newlinesNumber, int wordsNumber, int bytesNumber) {
+        Statistics(int newlinesNumber, int wordsNumber, int bytesNumber) {
             this.newlinesNumber = newlinesNumber;
             this.wordsNumber = wordsNumber;
             this.bytesNumber = bytesNumber;
@@ -50,8 +50,8 @@ public class Wc implements Command {
             Statistics totalStatistics = new Statistics();
             for (String arg : args) {
                 try {
-                    Statistics currentStatistics = getStringStatistics(new String(Files.readAllBytes(Paths.get(arg)),
-                            StandardCharsets.UTF_8));
+                    Statistics currentStatistics = getStringStatistics(new String(
+                            Files.readAllBytes(Paths.get(arg)), StandardCharsets.UTF_8));
                     totalStatistics.add(currentStatistics);
                     executionResult.append(currentStatistics.toString());
                 } catch (InvalidPathException exception) {

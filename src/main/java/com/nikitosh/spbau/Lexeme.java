@@ -13,11 +13,13 @@ public class Lexeme {
         ASSIGNMENT
     }
 
-    private static final Map<Character, Type> TYPES = new HashMap<Character, Type>() {{
-        put('|',  Type.PIPE);
-        put('\'', Type.SINGLE_QUOTE);
-        put('"',  Type.DOUBLE_QUOTE);
-    }};
+    private static final Map<Character, Type> TYPES = new HashMap<Character, Type>() {
+        {
+            put('|',  Type.PIPE);
+            put('\'', Type.SINGLE_QUOTE);
+            put('"',  Type.DOUBLE_QUOTE);
+        }
+    };
 
 
     private Type type;

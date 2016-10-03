@@ -13,8 +13,8 @@ public class Assignment implements Command {
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
             throws SyntaxErrorException, IOException {
         if (args.size() != 2) {
-            throw new SyntaxErrorException("assignment", "wrong number of arguments: expected 2 but found " +
-                    args.size());
+            throw new SyntaxErrorException("assignment", "wrong number of arguments: expected 2 but found "
+                    + args.size());
         }
         environment.setValue(args.get(0), args.get(1));
         return IOUtils.toInputStream("", "UTF-8");
