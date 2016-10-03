@@ -10,7 +10,7 @@ public class Shell {
     private static final String NEW_LINE_SEPARATOR = "$";
 
     private Environment environment = new EnvironmentImpl();
-    private Lexer lexer = new Lexer();
+    private Lexer lexer = new LexerImpl();
     private Parser parser = new Parser();
 
     public static void main(String[] args) {
