@@ -9,7 +9,7 @@ public class Shell {
     private static final String EXIT = "exit";
     private static final String NEW_LINE_SEPARATOR = "$";
 
-    private EnvironmentImpl environment = new EnvironmentImpl();
+    private Environment environment = new EnvironmentImpl();
     private Lexer lexer = new Lexer();
     private Parser parser = new Parser();
 
