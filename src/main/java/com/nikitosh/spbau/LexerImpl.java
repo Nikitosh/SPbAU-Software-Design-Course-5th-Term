@@ -17,12 +17,17 @@ public class LexerImpl implements Lexer {
         int length = commandLine.length();
         List<Lexeme> lexemes = new ArrayList<>();
         String currentLexeme = "";
-        boolean isAssignment = false, isSubstitution = false;
+        boolean isAssignment = false;
+        boolean isSubstitution = false;
         for (int i = 0; i < length;) {
             char symbol = commandLine.charAt(i);
-            if (SPLITTERS.contains(String.valueOf(symbol)) && !currentLexeme.isEmpty()) {
-                lexemes.add(getLexeme(currentLexeme, isAssignment, isSubstitution));
-                currentLexeme = "";
+            if (SPLITTERS.contains(String.valueOf(symbol))) {
+                if (!currentLexeme.isEmpty()) {
+                    lexemes.add(getLexeme(currentLexeme, isAssignment, isSubstitution));
+                    currentLexeme = "";
+                }
+                isAssignment = false;
+                isSubstitution = false;
             }
             if (symbol == SPACE_SYMBOL) {
                 i++;
@@ -82,7 +87,7 @@ public class LexerImpl implements Lexer {
             }
             if (lexeme.getType() == Lexeme.Type.DOUBLE_QUOTE) {
                 String content = lexeme.getContent();
-                content = content.substring(1, content.length());
+                content = content.substring(1, content.length() - 1);
                 substitutedLexemes.add(new Lexeme(Lexeme.Type.TEXT, substitute(content, environment)));
                 continue;
             }
@@ -100,7 +105,8 @@ public class LexerImpl implements Lexer {
         String result = "";
         for (int i = 0; i < length;) {
             if (content.charAt(i) != SUBSTITUTION_SYMBOL) {
-                result += content.charAt(i);
+                result += content.charAt(i++);
+                continue;
             }
             int j = i + 1;
             String variable = "";
