@@ -34,7 +34,7 @@ public class WcTest {
 
     @Test
     public void testOneFile() throws IOException {
-        File file = createTemporaryFileWithContent(testFolder, "file.txt", CONTENT2);
+        File file = TestUtilities.createTemporaryFileWithContent(testFolder, "file.txt", CONTENT2);
         Environment environment = mock(Environment.class);
         InputStream inputStream = new Wc().execute(
                 Arrays.asList(file.getPath()), new ByteArrayInputStream("text".getBytes()), environment);
@@ -44,8 +44,8 @@ public class WcTest {
 
     @Test
     public void testManyFiles() throws IOException {
-        File file1 = createTemporaryFileWithContent(testFolder, "file1.txt", CONTENT1);
-        File file2 = createTemporaryFileWithContent(testFolder, "file2.txt", CONTENT2);
+        File file1 = TestUtilities.createTemporaryFileWithContent(testFolder, "file1.txt", CONTENT1);
+        File file2 = TestUtilities.createTemporaryFileWithContent(testFolder, "file2.txt", CONTENT2);
         Environment environment = mock(Environment.class);
         InputStream inputStream = new Wc().execute(
                 Arrays.asList(file1.getPath(), file2.getPath()), new ByteArrayInputStream("".getBytes()), environment);
@@ -58,14 +58,5 @@ public class WcTest {
     public void testNoSuchFile() throws IOException {
         Environment environment = mock(Environment.class);
         new Wc().execute(Arrays.asList(FAKE_FILE_NAME), Utilities.getEmptyInputStream(), environment);
-    }
-
-    private File createTemporaryFileWithContent(TemporaryFolder folder, String fileName, String content)
-            throws IOException {
-        File tempFile = folder.newFile(fileName);
-        PrintStream outputStream = new PrintStream(new FileOutputStream(tempFile));
-        outputStream.print(content);
-        outputStream.close();
-        return tempFile;
     }
 }

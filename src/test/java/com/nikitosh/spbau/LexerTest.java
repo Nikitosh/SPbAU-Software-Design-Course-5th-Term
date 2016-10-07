@@ -13,10 +13,6 @@ public class LexerTest {
     @Test
     public void testParse() throws IOException {
         Lexer lexer = new LexerImpl();
-        List<Lexeme> answer = lexer.parse(" a=5  |ech$d \"abc  de\"  s=2|    'cat'  |r=$a");
-        for (Lexeme lexeme : answer) {
-            System.out.println(lexeme.getType() + " " + lexeme.getContent());
-        }
         assertEquals(Arrays.asList(
                         new Lexeme(Lexeme.Type.ASSIGNMENT, "a=5"),
                         new Lexeme(Lexeme.Type.PIPE, "|"),
