@@ -44,13 +44,16 @@ public class Parser {
             if (commandList.isEmpty()) {
                 throw new SyntaxErrorException("pipe", "unexpected pipe found");
             }
-            if (commandList.get(0).getType() == Lexeme.Type.ASSIGNMENT) {
-                String content = commandList.get(0).getContent();
+            Lexeme firstLexeme = commandList.get(0);
+            if (firstLexeme.getType() == Lexeme.Type.ASSIGNMENT) {
+                String content = firstLexeme.getContent();
                 int splitter = content.indexOf('=');
                 try {
                     inputStream = new Assignment().execute(
-                            Arrays.asList(content.substring(0, splitter),
-                                    content.substring(splitter + 1, content.length())),
+                            Arrays.asList(
+                                    content.substring(0, splitter),
+                                    content.substring(splitter + 1, content.length())
+                            ),
                             inputStream, environment);
                 } catch (IOException exception) {
                     exception.printStackTrace();
@@ -59,8 +62,8 @@ public class Parser {
             }
             Command command;
             List<Lexeme> arguments;
-            if (COMMANDS.containsKey(commandList.get(0).getContent())) {
-                command = COMMANDS.get(commandList.get(0).getContent());
+            if (COMMANDS.containsKey(firstLexeme.getContent())) {
+                command = COMMANDS.get(firstLexeme.getContent());
                 arguments = commandList.subList(1, commandList.size());
             } else {
                 command = new ExternalCall();
