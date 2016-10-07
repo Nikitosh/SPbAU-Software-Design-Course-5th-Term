@@ -3,6 +3,8 @@ package com.nikitosh.spbau;
 import java.util.*;
 
 public class Lexeme {
+    private static final int P = 1087;
+
     public enum Type {
         TEXT,
         PIPE,
@@ -19,7 +21,6 @@ public class Lexeme {
             put('"',  Type.DOUBLE_QUOTE);
         }
     };
-
 
     private Type type;
     private String content;
@@ -39,5 +40,19 @@ public class Lexeme {
 
     public static Type getType(char symbol) {
         return TYPES.get(symbol);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Lexeme) {
+            Lexeme lexeme = (Lexeme) other;
+            return type.equals(lexeme.type) && content.equals(lexeme.content);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return content.hashCode() * P + type.hashCode();
     }
 }
