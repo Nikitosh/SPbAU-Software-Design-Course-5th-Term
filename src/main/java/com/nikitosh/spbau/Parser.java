@@ -38,49 +38,45 @@ public class Parser {
         );
     }
 
-    public InputStream execute(List<Lexeme> lexemes, Environment environment) {
+    public InputStream execute(List<Lexeme> lexemes, Environment environment) throws SyntaxErrorException {
         List<List<Lexeme>> splittedLexemes = lexemes.stream().collect(splitBySeparator(
                 lexeme -> lexeme.getType() == Lexeme.Type.PIPE));
         InputStream inputStream = System.in;
-        try {
-            for (List<Lexeme> commandList : splittedLexemes) {
-                if (commandList.isEmpty()) {
-                    throw new SyntaxErrorException("pipe", "unexpected pipe found");
-                }
-                if (commandList.get(0).getType() == Lexeme.Type.ASSIGNMENT) {
-                    String content = commandList.get(0).getContent();
-                    int splitter = content.indexOf('=');
-                    try {
-                        inputStream = new Assignment().execute(
-                                Arrays.asList(content.substring(0, splitter),
-                                              content.substring(splitter + 1, content.length())),
-                                inputStream, environment);
-                    } catch (IOException exception) {
-                        exception.printStackTrace();
-                    }
-                    continue;
-                }
-                Command command;
-                List<Lexeme> arguments;
-                if (COMMANDS.containsKey(commandList.get(0).getContent())) {
-                    command = COMMANDS.get(commandList.get(0).getContent());
-                    arguments = commandList.subList(1, commandList.size());
-                } else {
-                    command = new ExternalCall();
-                    arguments = commandList;
-                }
+        for (List<Lexeme> commandList : splittedLexemes) {
+            if (commandList.isEmpty()) {
+                throw new SyntaxErrorException("pipe", "unexpected pipe found");
+            }
+            if (commandList.get(0).getType() == Lexeme.Type.ASSIGNMENT) {
+                String content = commandList.get(0).getContent();
+                int splitter = content.indexOf('=');
                 try {
-                    inputStream = command.execute(
-                            arguments.stream().map(Lexeme::getContent).collect(Collectors.toList()),
-                            inputStream,
-                            environment);
-
+                    inputStream = new Assignment().execute(
+                            Arrays.asList(content.substring(0, splitter),
+                                    content.substring(splitter + 1, content.length())),
+                            inputStream, environment);
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
+                continue;
             }
-        } catch (SyntaxErrorException exception) {
-            System.err.println(exception.getMessage());
+            Command command;
+            List<Lexeme> arguments;
+            if (COMMANDS.containsKey(commandList.get(0).getContent())) {
+                command = COMMANDS.get(commandList.get(0).getContent());
+                arguments = commandList.subList(1, commandList.size());
+            } else {
+                command = new ExternalCall();
+                arguments = commandList;
+            }
+            try {
+                inputStream = command.execute(
+                        arguments.stream().map(Lexeme::getContent).collect(Collectors.toList()),
+                        inputStream,
+                        environment);
+
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         }
         return inputStream;
     }
