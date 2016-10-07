@@ -1,18 +1,14 @@
 package com.nikitosh.spbau.commands;
 
-import com.nikitosh.spbau.Environment;
-import com.nikitosh.spbau.SyntaxErrorException;
-import com.nikitosh.spbau.Utilities;
-import org.apache.commons.io.IOUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import com.nikitosh.spbau.*;
+import org.apache.commons.io.*;
+import org.junit.*;
+import org.junit.rules.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 

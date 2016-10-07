@@ -1,19 +1,13 @@
 package com.nikitosh.spbau.commands;
 
-import com.nikitosh.spbau.Environment;
-import com.nikitosh.spbau.SyntaxErrorException;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.nikitosh.spbau.*;
+import org.apache.commons.io.*;
+import org.apache.commons.lang3.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
-import java.util.List;
+import java.io.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.util.*;
 
 public class Wc implements Command {
     private static class Statistics {

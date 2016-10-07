@@ -1,10 +1,10 @@
 package com.nikitosh.spbau;
 
-import org.junit.Test;
+import org.junit.*;
 
-import java.io.IOException;
+import java.io.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class EnvironmentTest {
 

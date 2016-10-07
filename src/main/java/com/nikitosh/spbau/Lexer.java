@@ -1,6 +1,6 @@
 package com.nikitosh.spbau;
 
-import java.util.List;
+import java.util.*;
 
 public interface Lexer {
     List<Lexeme> parse(String commandLine) throws SyntaxErrorException;

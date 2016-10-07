@@ -1,13 +1,10 @@
 package com.nikitosh.spbau.commands;
 
-import com.nikitosh.spbau.Environment;
-import com.nikitosh.spbau.SyntaxErrorException;
+import com.nikitosh.spbau.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
-import java.util.List;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 
 public class Pwd implements Command {
     @Override

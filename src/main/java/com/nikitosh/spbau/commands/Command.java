@@ -1,11 +1,9 @@
 package com.nikitosh.spbau.commands;
 
-import com.nikitosh.spbau.Environment;
-import com.nikitosh.spbau.SyntaxErrorException;
+import com.nikitosh.spbau.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public interface Command {
     InputStream execute(List<String> args, InputStream inputStream, Environment environment)

@@ -1,9 +1,9 @@
 package com.nikitosh.spbau;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.*;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 public class Shell {
     private static final String EXIT = "exit";

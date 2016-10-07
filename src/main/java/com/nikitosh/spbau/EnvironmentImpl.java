@@ -1,7 +1,6 @@
 package com.nikitosh.spbau;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class EnvironmentImpl implements Environment {
     private Map<String, String> variableValues = new HashMap<>();

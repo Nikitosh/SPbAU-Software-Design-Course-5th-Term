@@ -1,18 +1,14 @@
 package com.nikitosh.spbau.commands;
 
-import com.nikitosh.spbau.Environment;
-import com.nikitosh.spbau.SyntaxErrorException;
-import com.nikitosh.spbau.Utilities;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import com.nikitosh.spbau.*;
+import org.apache.commons.io.*;
+import org.junit.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
+import java.io.*;
+import java.util.*;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class AssignmentTest {
 

@@ -1,7 +1,6 @@
 package com.nikitosh.spbau;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class LexerImpl implements Lexer {
     private static final char SPACE_SYMBOL = ' ';
@@ -73,7 +72,7 @@ public class LexerImpl implements Lexer {
     }
 
     @Override
-    public List<Lexeme> substitute(List<Lexeme> lexemes, Environment environment) {
+        public List<Lexeme> substitute(List<Lexeme> lexemes, Environment environment) {
         List<Lexeme> substitutedLexemes = new ArrayList<>();
         for (Lexeme lexeme : lexemes) {
             if (lexeme.getType() == Lexeme.Type.SINGLE_QUOTE) {

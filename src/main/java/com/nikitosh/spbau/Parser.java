@@ -2,12 +2,10 @@ package com.nikitosh.spbau;
 
 import com.nikitosh.spbau.commands.*;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.function.*;
+import java.util.stream.*;
 
 public class Parser {
     private static final Map<String, Command> COMMANDS = new HashMap<String, Command>() {

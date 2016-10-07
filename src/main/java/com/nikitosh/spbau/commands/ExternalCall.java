@@ -1,12 +1,10 @@
 package com.nikitosh.spbau.commands;
 
-import com.nikitosh.spbau.Environment;
-import com.nikitosh.spbau.SyntaxErrorException;
-import org.apache.commons.io.IOUtils;
+import com.nikitosh.spbau.*;
+import org.apache.commons.io.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class ExternalCall implements Command {
     @Override
