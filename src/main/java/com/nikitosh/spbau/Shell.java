@@ -5,6 +5,10 @@ import org.apache.commons.io.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Main class of application, implements Shell itself.
+ */
+
 public class Shell {
     private static final String EXIT = "exit";
     private static final String NEW_LINE_SEPARATOR = "$";

@@ -9,7 +9,15 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
 
+/**
+ * Implements <i> wc </i> command.
+ */
+
 public class Wc implements Command {
+
+    /**
+     * Helper class, which is used for counting number of new lines, words and bytes of file's content.
+     */
     private static class Statistics {
         private int newlinesNumber = 0;
         private int wordsNumber = 0;
@@ -34,19 +42,34 @@ public class Wc implements Command {
         public String toString() {
             return newlinesNumber + " " + wordsNumber + " " + bytesNumber + "\n";
         }
+
+        static Statistics getStringStatistics(String content) {
+            int newlinesNumber = StringUtils.countMatches(content, "\n");
+            int wordsNumber = content.trim().split("\\s+").length;
+            int bytesNumber = content.length();
+            return new Statistics(newlinesNumber, wordsNumber, bytesNumber);
+        }
     }
 
+    /**
+     *
+     * @param  args        list of arguments for the command.
+     * @param  inputStream InputStream where Command reads from.
+     * @param  environment Shell environment with all current variables.
+     *
+     * @return             three numbers for each file: numbers of new lines, words and bytes.
+     */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
             throws SyntaxErrorException, IOException {
         StringBuilder executionResult = new StringBuilder();
         if (args.isEmpty()) {
-            executionResult.append(getStringStatistics(IOUtils.toString(inputStream)).toString());
+            executionResult.append(Statistics.getStringStatistics(IOUtils.toString(inputStream)).toString());
         } else {
             Statistics totalStatistics = new Statistics();
             for (String arg : args) {
                 try {
-                    Statistics currentStatistics = getStringStatistics(new String(
+                    Statistics currentStatistics = Statistics.getStringStatistics(new String(
                             Files.readAllBytes(Paths.get(arg)), StandardCharsets.UTF_8));
                     totalStatistics.add(currentStatistics);
                     executionResult.append(currentStatistics.toString());
@@ -59,12 +82,5 @@ public class Wc implements Command {
             }
         }
         return new ByteArrayInputStream(executionResult.toString().getBytes());
-    }
-
-    private Statistics getStringStatistics(String content) {
-        int newlinesNumber = StringUtils.countMatches(content, "\n");
-        int wordsNumber = content.trim().split("\\s+").length;
-        int bytesNumber = content.length();
-        return new Statistics(newlinesNumber, wordsNumber, bytesNumber);
     }
 }

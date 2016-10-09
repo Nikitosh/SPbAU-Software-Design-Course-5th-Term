@@ -7,7 +7,19 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
 
+/**
+ * Implements <i> cat </i> command.
+ */
+
 public class Cat implements Command {
+    /**
+     *
+     * @param  args        list of arguments for the command.
+     * @param  inputStream InputStream where Command reads from.
+     * @param  environment Shell environment with all current variables.
+     *
+     * @return             content of files, given in args.
+     */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
             throws SyntaxErrorException, IOException {

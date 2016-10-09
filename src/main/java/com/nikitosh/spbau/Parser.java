@@ -7,6 +7,10 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
+/**
+ * Class for execution given list of lexemes.
+ */
+
 public class Parser {
     private static final Map<String, Command> COMMANDS = new HashMap<String, Command>() {
         {
@@ -36,6 +40,13 @@ public class Parser {
         );
     }
 
+    /**
+     *
+     * @param lexemes     list of lexemes which should be executed.
+     * @param environment environment for getting and setting variables' values.
+     *
+     * @return            result of execution as InputStream.
+     */
     public InputStream execute(List<Lexeme> lexemes, Environment environment) throws SyntaxErrorException {
         List<List<Lexeme>> splittedLexemes = lexemes.stream().collect(splitBySeparator(
                 lexeme -> lexeme.getType() == Lexeme.Type.PIPE));

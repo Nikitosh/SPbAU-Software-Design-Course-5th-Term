@@ -2,6 +2,10 @@ package com.nikitosh.spbau;
 
 import java.util.*;
 
+/**
+ * Implements Environment interface with help of Map&lt;&gt;.
+ */
+
 public class EnvironmentImpl implements Environment {
     private Map<String, String> variableValues = new HashMap<>();
 

@@ -2,15 +2,41 @@ package com.nikitosh.spbau;
 
 import java.util.*;
 
+/**
+ * Objects, which Lexer produces parsing given string.
+ * It's described by two it's type and content.
+ */
+
 public class Lexeme {
     private static final int P = 1087;
 
+    /**
+     * Lexeme's available types.
+     */
     public enum Type {
+        /**
+         * text lexeme.
+         */
         TEXT,
+        /**
+         * pipe symbol.
+         */
         PIPE,
+        /**
+         * text surrounded by single quotes.
+         */
         SINGLE_QUOTE,
+        /**
+         * text surrounded by double quotes.
+         */
         DOUBLE_QUOTE,
+        /**
+         * text with variable which should be substituted.
+         */
         SUBSTITUTION,
+        /**
+         * text like variableName=value.
+         */
         ASSIGNMENT
     }
 

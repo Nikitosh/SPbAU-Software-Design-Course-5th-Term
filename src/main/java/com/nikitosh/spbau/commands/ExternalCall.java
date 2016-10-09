@@ -6,7 +6,20 @@ import org.apache.commons.io.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Implements <i> external call </i> command.
+ * If no standard command suits current request, Shell tries to handle it like it would be external call.
+ */
+
 public class ExternalCall implements Command {
+    /**
+     *
+     * @param  args        list of arguments for the command.
+     * @param  inputStream InputStream where Command reads from.
+     * @param  environment Shell environment with all current variables.
+     *
+     * @return             result of execution of external program.
+     */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
             throws SyntaxErrorException, IOException {

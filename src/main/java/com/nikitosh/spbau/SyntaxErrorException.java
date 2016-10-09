@@ -1,5 +1,9 @@
 package com.nikitosh.spbau;
 
+/**
+ * Exception for showing that command line has some syntax errors.
+ */
+
 public class SyntaxErrorException extends RuntimeException {
     private String command;
     private String message;
