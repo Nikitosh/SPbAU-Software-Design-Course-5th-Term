@@ -16,6 +16,7 @@ public class Parser {
         {
             put("cat", new Cat());
             put("echo", new Echo());
+            put("grep", new Grep());
             put("pwd", new Pwd());
             put("wc", new Wc());
         }
