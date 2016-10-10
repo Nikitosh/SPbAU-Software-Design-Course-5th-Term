@@ -21,9 +21,9 @@ public class ExternalCallTest {
     public void testArg() throws IOException {
         Environment environment = mock(Environment.class);
         InputStream inputStream1 = new ExternalCall().execute(
-                Arrays.asList("cat", "pom.xml"), Utilities.getEmptyInputStream(), environment);
+                Arrays.asList("cat", ".gitignore"), Utilities.getEmptyInputStream(), environment);
         InputStream inputStream2 = new Cat().execute(
-                Arrays.asList("pom.xml"), Utilities.getEmptyInputStream(), environment);
+                Arrays.asList(".gitignore"), Utilities.getEmptyInputStream(), environment);
         verify(environment, never()).setValue(anyString(), anyString());
         assertTrue(IOUtils.contentEquals(inputStream1, inputStream2));
     }
