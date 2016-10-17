@@ -13,12 +13,13 @@ import java.util.*;
 
 public class Cat implements Command {
     /**
+     * Print content of all files given in arguments, or content of inputStream if no arguments provided.
      *
-     * @param  args        list of arguments for the command.
+     * @param  args list of arguments for the command.
      * @param  inputStream InputStream where Command reads from.
      * @param  environment Shell environment with all current variables.
      *
-     * @return             content of files, given in args.
+     * @return content of files, given in args.
      */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)

@@ -52,12 +52,14 @@ public class Wc implements Command {
     }
 
     /**
+     * Prints number of new lines, words ans bytes for each file given in arguments,
+     * or for content of inputStream if no arguments provided.
      *
-     * @param  args        list of arguments for the command.
+     * @param  args list of arguments for the command.
      * @param  inputStream InputStream where Command reads from.
      * @param  environment Shell environment with all current variables.
      *
-     * @return             three numbers for each file: numbers of new lines, words and bytes.
+     * @return three numbers for each file: numbers of new lines, words and bytes.
      */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)

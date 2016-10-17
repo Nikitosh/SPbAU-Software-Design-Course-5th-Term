@@ -11,12 +11,13 @@ import java.util.*;
 
 public class Assignment implements Command {
     /**
+     * Assigns variable given in first argument to value given in second argument.
      *
-     * @param  args        list of arguments for the command.
+     * @param  args list of arguments for the command.
      * @param  inputStream InputStream where Command reads from.
      * @param  environment Shell environment with all current variables.
      *
-     * @return             empty InputStream.
+     * @return empty InputStream.
      */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)

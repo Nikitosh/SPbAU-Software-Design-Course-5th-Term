@@ -77,7 +77,7 @@ public class LexerImpl implements Lexer {
     }
 
     @Override
-        public List<Lexeme> substitute(List<Lexeme> lexemes, Environment environment) {
+    public List<Lexeme> substitute(List<Lexeme> lexemes, Environment environment) {
         List<Lexeme> substitutedLexemes = new ArrayList<>();
         for (Lexeme lexeme : lexemes) {
             if (lexeme.getType() == Lexeme.Type.SINGLE_QUOTE) {

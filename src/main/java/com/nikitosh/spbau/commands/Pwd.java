@@ -12,12 +12,13 @@ import java.util.*;
 
 public class Pwd implements Command {
     /**
+     * Prints path to current directory.
      *
-     * @param  args        list of arguments for the command.
+     * @param  args list of arguments for the command.
      * @param  inputStream InputStream where Command reads from.
      * @param  environment Shell environment with all current variables.
      *
-     * @return             path to current directory.
+     * @return path to current directory.
      */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)

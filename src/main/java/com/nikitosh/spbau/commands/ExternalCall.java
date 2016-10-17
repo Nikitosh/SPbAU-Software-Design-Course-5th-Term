@@ -13,12 +13,14 @@ import java.util.*;
 
 public class ExternalCall implements Command {
     /**
+     * Executes some external program if no suitable command among available found.
+     * Uses first argument as program name and other arguments as program's arguments, reads from inputStream.
      *
-     * @param  args        list of arguments for the command.
+     * @param  args list of arguments for the command.
      * @param  inputStream InputStream where Command reads from.
      * @param  environment Shell environment with all current variables.
      *
-     * @return             result of execution of external program.
+     * @return result of execution of external program.
      */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)

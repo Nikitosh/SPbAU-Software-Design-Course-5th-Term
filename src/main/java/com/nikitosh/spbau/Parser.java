@@ -41,11 +41,12 @@ public class Parser {
     }
 
     /**
+     * Executes given list of lexemes using current environment.
      *
-     * @param lexemes     list of lexemes which should be executed.
-     * @param environment environment for getting and setting variables' values.
+     * @param  lexemes list of lexemes which should be executed.
+     * @param  environment environment for getting and setting variables' values.
      *
-     * @return            result of execution as InputStream.
+     * @return result of execution as InputStream.
      */
     public InputStream execute(List<Lexeme> lexemes, Environment environment) throws SyntaxErrorException {
         List<List<Lexeme>> splittedLexemes = lexemes.stream().collect(splitBySeparator(

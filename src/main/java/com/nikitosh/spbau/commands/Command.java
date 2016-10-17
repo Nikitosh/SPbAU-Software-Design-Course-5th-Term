@@ -11,12 +11,13 @@ import java.util.*;
 
 public interface Command {
     /**
+     * Executes command, which reads from inputStream, with given arguments.
      *
-     * @param  args        list of arguments for the command.
+     * @param  args list of arguments for the command.
      * @param  inputStream InputStream where Command reads from.
      * @param  environment Shell environment with all current variables.
      *
-     * @return             result of command execution as InputStream.
+     * @return result of command execution as InputStream.
      */
     InputStream execute(List<String> args, InputStream inputStream, Environment environment)
             throws SyntaxErrorException, IOException;

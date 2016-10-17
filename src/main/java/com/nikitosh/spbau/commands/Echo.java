@@ -11,12 +11,13 @@ import java.util.*;
 
 public class Echo implements Command {
     /**
+     * Print content of arguments, splitted by whitespace.
      *
-     * @param  args        list of arguments for the command.
+     * @param  args list of arguments for the command.
      * @param  inputStream InputStream where Command reads from.
      * @param  environment Shell environment with all current variables.
      *
-     * @return             content of args, splitted by whitespace.
+     * @return content of args, splitted by whitespace.
      */
     @Override
     public InputStream execute(List<String> args, InputStream inputStream, Environment environment)
