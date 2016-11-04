@@ -1,10 +1,18 @@
 package com.nikitosh.spbau.model;
 
-public class Settings {
+public final class Settings {
+    private static Settings instance;
     private String name;
     private byte[] ip;
 
-    Settings() {
+    private Settings() {
+    }
+
+    public static Settings getInstance() {
+        if (instance == null) {
+            instance = new Settings();
+        }
+        return instance;
     }
 
     public String getName() {
