@@ -9,23 +9,35 @@ import java.net.*;
 public class SettingsDialog extends JDialog {
     public SettingsDialog(Settings settings) {
         JLabel nameLabel = new JLabel("Name:");
-        JTextField nameTextField = new JTextField("Name");
+        JTextField nameTextField = new JTextField(Settings.getInstance().getName());
         JLabel serverIpLabel = new JLabel("Server IP:");
-        JTextField serverIpTextField = new JTextField("0.0.0.0");
+        JTextField serverIpTextField;
+        try {
+            serverIpTextField = new JTextField(
+                    InetAddress.getByAddress(Settings.getInstance().getServerIp()).getHostAddress());
+        } catch (UnknownHostException exception) {
+            return;
+        }
+        JLabel portLabel = new JLabel("Port:");
+        JTextField portTextField = new JTextField(String.valueOf(Settings.getInstance().getPort()));
         JButton okButton = new JButton("Ok");
         okButton.addActionListener((ActionEvent actionEvent) -> {
             try {
-                settings.setIp(InetAddress.getByName(serverIpTextField.getText()).getAddress());
+                settings.setServerIp(InetAddress.getByName(serverIpTextField.getText()).getAddress());
                 settings.setName(nameTextField.getText());
+                settings.setPort(Integer.parseInt(portTextField.getText()));
                 dispose();
-            } catch (UnknownHostException e) {
+            } catch (UnknownHostException exception) {
                 JOptionPane.showMessageDialog(this, "Wrong IP address", "Warning", JOptionPane.WARNING_MESSAGE);
+            } catch (NumberFormatException exception) {
+                JOptionPane.showMessageDialog(this, "Wrong port", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         });
 
         Box verticalBox = Box.createVerticalBox();
         verticalBox.add(getLabelTextFieldBox(nameLabel, nameTextField));
         verticalBox.add(getLabelTextFieldBox(serverIpLabel, serverIpTextField));
+        verticalBox.add(getLabelTextFieldBox(portLabel, portTextField));
         verticalBox.add(okButton);
         add(verticalBox);
         pack();
