@@ -12,6 +12,10 @@ public class ChatClient implements Client {
     private Conversation conversation;
     private Runnable onConnectToServer = () -> {};
 
+    public ChatClient(Conversation conversation) {
+        this.conversation = conversation;
+    }
+
     @Override
     public void connect(byte[] ip, int port) {
         try {
@@ -24,13 +28,15 @@ public class ChatClient implements Client {
             return;
         }
         onConnectToServer.run();
-        conversation = new Conversation(socket);
-        conversation.run();
+        conversation.run(socket);
     }
 
     @Override
     public void disconnect() {
         conversation.stop();
+        if (socket == null) {
+            return;
+        }
         try {
             socket.close();
         } catch (IOException exception) {

@@ -14,16 +14,9 @@ public class Conversation {
     private DataOutputStream outputStream;
     private Consumer<Message> onReceiveMessage;
 
-    public Conversation(Socket socket) {
-        try {
-            inputStream = new DataInputStream(socket.getInputStream());
-            outputStream = new DataOutputStream(socket.getOutputStream());
-        } catch (IOException exception) {
-            LOGGER.error("Failed to get streams from socket: " + exception.getMessage());
-        }
-    }
+    public Conversation() {}
 
-    public void run() {
+    public void run(Socket socket) {
         isRunning = true;
         while (isRunning) {
             try {

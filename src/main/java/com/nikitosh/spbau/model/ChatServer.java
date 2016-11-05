@@ -13,7 +13,8 @@ public class ChatServer implements Server {
     private Conversation conversation;
     private Runnable onClientConnected = () -> {};
 
-    public ChatServer(int port) {
+    public ChatServer(Conversation conversation, int port) {
+        this.conversation = conversation;
         this.port = port;
     }
 
@@ -28,8 +29,7 @@ public class ChatServer implements Server {
         try {
             Socket socket = serverSocket.accept();
             onClientConnected.run();
-            conversation = new Conversation(socket);
-            conversation.run();
+            conversation.run(socket);
         } catch (IOException exception) {
             LOGGER.warn("Exception during accepting client socket: " + exception.getMessage());
         }
@@ -38,6 +38,9 @@ public class ChatServer implements Server {
     @Override
     public void stop() {
         conversation.stop();
+        if (serverSocket == null) {
+            return;
+        }
         try {
             serverSocket.close();
         } catch (IOException exception) {
