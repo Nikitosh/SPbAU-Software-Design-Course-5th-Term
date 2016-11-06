@@ -4,7 +4,8 @@ public final class Settings {
     private static Settings instance;
     private String name = "Name";
     private byte[] serverIp = new byte[] {0, 0, 0, 0};
-    private int port = 0;
+    private int serverPort = 0;
+    private int portToConnect = 0;
 
     private Settings() {}
 
@@ -23,8 +24,12 @@ public final class Settings {
         return serverIp;
     }
 
-    public int getPort() {
-        return port;
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public int getPortToConnect() {
+        return portToConnect;
     }
 
     public void setName(String name) {
@@ -35,7 +40,11 @@ public final class Settings {
         this.serverIp = serverIp;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
+    }
+
+    public void setPortToConnect(int portToConnect) {
+        this.portToConnect = portToConnect;
     }
 }
