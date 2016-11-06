@@ -8,21 +8,22 @@ import java.awt.event.*;
 
 public class ChatFrame extends JFrame {
     private static final String FRAME_NAME = "Chat";
-    private static final int FRAME_WIDTH = 640;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int CHAT_HISTORY_ROW_NUMBER = 30;
+    private static final int CHAT_HISTORY_COLUMN_NUMBER = 50;
+    private static final int MESSAGE_TEXT_ROW_NUMBER = 6;
 
-    private Conversation conversation;
+    private JTextArea chatHistoryTextArea;
+    private JTextArea messageTextArea;
+    private JButton sendButton;
 
-    public ChatFrame(Conversation conversation) {
+    public ChatFrame(Conversation conversation, Runnable onWindowClosed, Runnable onFrameCreated) {
         super(FRAME_NAME);
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setJMenuBar(new MenuBar());
-        buildChatInterface();
-    }
-
-    public ChatFrame(Conversation conversation, Runnable onWindowClosed) {
-        this(conversation);
+        add(buildChatInterfacePanel());
+        pack();
+        setLocationRelativeTo(null);
+        setCallbacks(conversation);
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -30,27 +31,48 @@ public class ChatFrame extends JFrame {
                 onWindowClosed.run();
             }
         });
+        new Thread(onFrameCreated).start();
     }
 
-    private void buildChatInterface() {
-        JTextArea chatHistoryTextArea = new JTextArea();
+    private JPanel buildChatInterfacePanel() {
+        JPanel panel = new JPanel();
+        chatHistoryTextArea = new JTextArea(CHAT_HISTORY_ROW_NUMBER, CHAT_HISTORY_COLUMN_NUMBER);
         chatHistoryTextArea.setEditable(false);
         chatHistoryTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        JTextArea messageTextArea = new JTextArea();
+        messageTextArea = new JTextArea(MESSAGE_TEXT_ROW_NUMBER, CHAT_HISTORY_COLUMN_NUMBER);
         messageTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        JButton sendButton = new JButton("Send");
-        sendButton.addActionListener((ActionEvent actionEvent) -> {
+        sendButton = new JButton("Send");
 
-        });
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         Box horizontalBox = Box.createHorizontalBox();
+
         horizontalBox.add(new JScrollPane(messageTextArea));
         horizontalBox.add(sendButton);
-        Box verticalBox = Box.createVerticalBox();
-        verticalBox.add(new JScrollPane(chatHistoryTextArea));
-        verticalBox.add(horizontalBox);
-        add(verticalBox);
+        panel.add(new JScrollPane(chatHistoryTextArea));
+        panel.add(horizontalBox);
+        return panel;
+    }
+
+    private void setCallbacks(Conversation conversation) {
+        conversation.setOnReceiveMessage(this::appendMessageToChatHistory);
+        conversation.setOnConnectToServer(() -> {
+            chatHistoryTextArea.append("You connected to other user\n");
+        });
+        conversation.setOnClientConnected(() -> {
+            chatHistoryTextArea.append("New user connected to you\n");
+        });
+        sendButton.addActionListener((ActionEvent actionEvent) -> {
+            Message message = new Message(Settings.getInstance().getName(), messageTextArea.getText() + "\n");
+            conversation.sendMessage(message);
+            appendMessageToChatHistory(message);
+            messageTextArea.setText("");
+        });
+    }
+
+    private void appendMessageToChatHistory(Message message) {
+        chatHistoryTextArea.append(message.getName() + ": " + message.getText());
     }
 }

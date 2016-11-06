@@ -3,37 +3,43 @@ package com.nikitosh.spbau.ui;
 import com.nikitosh.spbau.model.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class ChooseModeFrame extends JFrame {
     private static final String FRAME_NAME = "Choose mode";
-    private static final int FRAME_WIDTH = 640;
-    private static final int FRAME_HEIGHT = 480;
+    private static final int FRAME_WIDTH = 320;
+    private static final int FRAME_HEIGHT = 240;
 
     public ChooseModeFrame() {
         super(FRAME_NAME);
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setJMenuBar(new MenuBar());
-        buildChooseButtons();
+        JPanel panel = buildChooseButtonsPanel();
+        getContentPane().add(panel);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        setLocationRelativeTo(null);
     }
 
-    private void buildChooseButtons() {
+    private JPanel buildChooseButtonsPanel() {
+        JPanel panel = new JPanel();
         JButton serverModeButton = new JButton("Server");
         serverModeButton.addActionListener((ActionEvent actionEvent) -> {
             Conversation conversation = new Conversation();
-            Server server = new ChatServer(conversation, Settings.getInstance().getPort());
-            new ChatFrame(conversation, server::stop).setVisible(true);
+            Server server = new ChatServer(conversation, Settings.getInstance().getServerPort());
+            new ChatFrame(conversation, server::stop, server::start).setVisible(true);
         });
         JButton clientModeButton = new JButton("Client");
         clientModeButton.addActionListener((ActionEvent actionEvent) -> {
             Conversation conversation = new Conversation();
             Client client = new ChatClient(conversation);
-            new ChatFrame(conversation, client::disconnect).setVisible(true);
+            new ChatFrame(conversation, client::disconnect, () -> {
+                client.connect(Settings.getInstance().getServerIp(), Settings.getInstance().getPortToConnect());
+            }).setVisible(true);
         });
-        Box verticalBox = Box.createVerticalBox();
-        verticalBox.add(serverModeButton);
-        verticalBox.add(clientModeButton);
-        add(verticalBox);
+        panel.setLayout(new GridLayout(0, 1));
+        panel.add(serverModeButton);
+        panel.add(clientModeButton);
+        return panel;
     }
 }
