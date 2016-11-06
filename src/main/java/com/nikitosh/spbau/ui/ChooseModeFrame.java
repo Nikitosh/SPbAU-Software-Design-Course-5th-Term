@@ -18,7 +18,7 @@ public class ChooseModeFrame extends JFrame {
         JPanel panel = buildChooseButtonsPanel();
         getContentPane().add(panel);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); //set JFrame to appear in center
     }
 
     private JPanel buildChooseButtonsPanel() {
@@ -33,9 +33,9 @@ public class ChooseModeFrame extends JFrame {
         clientModeButton.addActionListener((ActionEvent actionEvent) -> {
             Controller controller = new Controller();
             Client client = new ClientImpl(controller);
-            new ChatFrame(controller, client::disconnect, () -> {
-                client.connect(Settings.getInstance().getServerIp(), Settings.getInstance().getPortToConnect());
-            }).setVisible(true);
+            new ChatFrame(controller, client::disconnect, () ->
+                    client.connect(Settings.getInstance().getServerIp(), Settings.getInstance().getPortToConnect()))
+                    .setVisible(true);
         });
         panel.setLayout(new GridLayout(0, 1));
         panel.add(serverModeButton);

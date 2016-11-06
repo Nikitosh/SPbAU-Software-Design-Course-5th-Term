@@ -11,13 +11,9 @@ public class MenuBar extends JMenuBar {
 
         JMenu settingsMenu = new JMenu("Settings");
         JMenuItem settingsItem = new JMenuItem("Change Settings");
-        settingsItem.addActionListener((ActionEvent actionEvent) -> changeSettings());
+        settingsItem.addActionListener((ActionEvent actionEvent) ->
+                new SettingsDialog(Settings.getInstance()).setVisible(true));
         settingsMenu.add(settingsItem);
         add(settingsMenu);
-    }
-
-    private void changeSettings() {
-        new SettingsDialog(Settings.getInstance()).setVisible(true);
-        repaint();
     }
 }

@@ -9,7 +9,7 @@ import java.util.function.*;
 public class Controller {
     private static final Logger LOGGER = LogManager.getLogger(Controller.class);
 
-    private boolean isRunning = false;
+    private volatile boolean isRunning = false;
     private Consumer<Message> onReceiveMessage;
     private Runnable onConnectToServer;
     private Runnable onClientConnected;
@@ -46,14 +46,16 @@ public class Controller {
         return message;
     }
 
-    public void sendMessage(Message message) {
-        if (outputStream != null) {
-            try {
-                message.write(outputStream);
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+    public boolean sendMessage(Message message) {
+        if (outputStream == null) {
+            return false;
         }
+        try {
+            message.write(outputStream);
+        } catch (IOException exception) {
+            return false;
+        }
+        return true;
     }
 
     public void setOnReceiveMessage(Consumer<Message> onReceiveMessage) {

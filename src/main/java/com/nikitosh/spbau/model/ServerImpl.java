@@ -9,6 +9,7 @@ public class ServerImpl implements Server {
     private static final Logger LOGGER = LogManager.getLogger(ServerImpl.class);
 
     private ServerSocket serverSocket;
+    private Socket socket;
     private int port;
     private Controller controller;
 
@@ -22,11 +23,11 @@ public class ServerImpl implements Server {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException exception) {
-            LOGGER.fatal("Failed to create ServerSocket: " + exception.getMessage());
-            System.exit(1);
+            LOGGER.error("Failed to create ServerSocket: " + exception.getMessage());
+            return;
         }
         try {
-            Socket socket = serverSocket.accept();
+            socket = serverSocket.accept();
             controller.runOnClientConnected();
             controller.run(socket);
         } catch (IOException exception) {
@@ -42,8 +43,11 @@ public class ServerImpl implements Server {
         }
         try {
             serverSocket.close();
+            if (socket != null) {
+                socket.close();
+            }
         } catch (IOException exception) {
-            LOGGER.warn("Exception during closing ServerSocket: " + exception.getMessage());
+            LOGGER.warn("Exception during closing socket by server: " + exception.getMessage());
         }
     }
 }

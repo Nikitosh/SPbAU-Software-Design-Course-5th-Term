@@ -22,7 +22,7 @@ public class ChatFrame extends JFrame {
         setJMenuBar(new MenuBar());
         add(buildChatInterfacePanel());
         pack();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); //set JFrame to appear in center
         setCallbacks(controller);
 
         this.addWindowListener(new WindowAdapter() {
@@ -46,9 +46,7 @@ public class ChatFrame extends JFrame {
         sendButton = new JButton("Send");
 
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
         Box horizontalBox = Box.createHorizontalBox();
-
         horizontalBox.add(new JScrollPane(messageTextArea));
         horizontalBox.add(sendButton);
         panel.add(new JScrollPane(chatHistoryTextArea));
@@ -65,10 +63,17 @@ public class ChatFrame extends JFrame {
             chatHistoryTextArea.append("New user connected to you\n");
         });
         sendButton.addActionListener((ActionEvent actionEvent) -> {
+            if (messageTextArea.getText().isEmpty()) { //doesn't allow to send empty messages
+                return;
+            }
             Message message = new Message(Settings.getInstance().getName(), messageTextArea.getText() + "\n");
-            controller.sendMessage(message);
-            appendMessageToChatHistory(message);
-            messageTextArea.setText("");
+            if (controller.sendMessage(message)) { //message was sent successfully
+                appendMessageToChatHistory(message);
+                messageTextArea.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "You're not connected to anybody", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
         });
     }
 
