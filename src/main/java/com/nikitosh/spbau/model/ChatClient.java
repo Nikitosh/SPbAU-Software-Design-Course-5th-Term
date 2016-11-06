@@ -10,7 +10,6 @@ public class ChatClient implements Client {
 
     private Socket socket;
     private Conversation conversation;
-    private Runnable onConnectToServer = () -> {};
 
     public ChatClient(Conversation conversation) {
         this.conversation = conversation;
@@ -27,7 +26,7 @@ public class ChatClient implements Client {
             LOGGER.error("Could not connect to server with given ip " + ip + ": " + exception.getMessage());
             return;
         }
-        onConnectToServer.run();
+        conversation.runOnConnectToServer();
         conversation.run(socket);
     }
 
@@ -42,9 +41,5 @@ public class ChatClient implements Client {
         } catch (IOException exception) {
             LOGGER.warn("Exception during closing socket: " + exception.getMessage());
         }
-    }
-
-    public void setOnConnectedToServer(Runnable onConnectedToServer) {
-        this.onConnectToServer = onConnectedToServer;
     }
 }

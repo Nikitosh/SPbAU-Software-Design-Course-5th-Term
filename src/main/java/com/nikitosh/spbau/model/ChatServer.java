@@ -11,7 +11,6 @@ public class ChatServer implements Server {
     private ServerSocket serverSocket;
     private int port;
     private Conversation conversation;
-    private Runnable onClientConnected = () -> {};
 
     public ChatServer(Conversation conversation, int port) {
         this.conversation = conversation;
@@ -28,7 +27,7 @@ public class ChatServer implements Server {
         }
         try {
             Socket socket = serverSocket.accept();
-            onClientConnected.run();
+            conversation.runOnClientConnected();
             conversation.run(socket);
         } catch (IOException exception) {
             LOGGER.warn("Exception during accepting client socket: " + exception.getMessage());
@@ -46,9 +45,5 @@ public class ChatServer implements Server {
         } catch (IOException exception) {
             LOGGER.warn("Exception during closing ServerSocket: " + exception.getMessage());
         }
-    }
-
-    public void setOnClientConnected(Runnable onClientConnected) {
-        this.onClientConnected = onClientConnected;
     }
 }
