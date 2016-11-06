@@ -6,8 +6,8 @@ import java.io.*;
 import java.net.*;
 import java.util.function.*;
 
-public class Conversation {
-    private static final Logger LOGGER = LogManager.getLogger(Conversation.class);
+public class Controller {
+    private static final Logger LOGGER = LogManager.getLogger(Controller.class);
 
     private boolean isRunning = false;
     private Consumer<Message> onReceiveMessage;
@@ -15,7 +15,7 @@ public class Conversation {
     private Runnable onClientConnected;
     private DataOutputStream outputStream;
 
-    public Conversation() {}
+    public Controller() {}
 
     public void run(Socket socket) {
         isRunning = true;

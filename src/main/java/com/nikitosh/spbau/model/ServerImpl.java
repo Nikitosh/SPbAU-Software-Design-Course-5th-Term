@@ -5,15 +5,15 @@ import org.apache.logging.log4j.*;
 import java.io.*;
 import java.net.*;
 
-public class ChatServer implements Server {
-    private static final Logger LOGGER = LogManager.getLogger(ChatServer.class);
+public class ServerImpl implements Server {
+    private static final Logger LOGGER = LogManager.getLogger(ServerImpl.class);
 
     private ServerSocket serverSocket;
     private int port;
-    private Conversation conversation;
+    private Controller controller;
 
-    public ChatServer(Conversation conversation, int port) {
-        this.conversation = conversation;
+    public ServerImpl(Controller controller, int port) {
+        this.controller = controller;
         this.port = port;
     }
 
@@ -27,8 +27,8 @@ public class ChatServer implements Server {
         }
         try {
             Socket socket = serverSocket.accept();
-            conversation.runOnClientConnected();
-            conversation.run(socket);
+            controller.runOnClientConnected();
+            controller.run(socket);
         } catch (IOException exception) {
             LOGGER.warn("Exception during accepting client socket: " + exception.getMessage());
         }
@@ -36,7 +36,7 @@ public class ChatServer implements Server {
 
     @Override
     public void stop() {
-        conversation.stop();
+        controller.stop();
         if (serverSocket == null) {
             return;
         }

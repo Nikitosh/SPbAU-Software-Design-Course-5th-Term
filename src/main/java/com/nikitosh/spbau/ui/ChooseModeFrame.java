@@ -25,15 +25,15 @@ public class ChooseModeFrame extends JFrame {
         JPanel panel = new JPanel();
         JButton serverModeButton = new JButton("Server");
         serverModeButton.addActionListener((ActionEvent actionEvent) -> {
-            Conversation conversation = new Conversation();
-            Server server = new ChatServer(conversation, Settings.getInstance().getServerPort());
-            new ChatFrame(conversation, server::stop, server::start).setVisible(true);
+            Controller controller = new Controller();
+            Server server = new ServerImpl(controller, Settings.getInstance().getServerPort());
+            new ChatFrame(controller, server::stop, server::start).setVisible(true);
         });
         JButton clientModeButton = new JButton("Client");
         clientModeButton.addActionListener((ActionEvent actionEvent) -> {
-            Conversation conversation = new Conversation();
-            Client client = new ChatClient(conversation);
-            new ChatFrame(conversation, client::disconnect, () -> {
+            Controller controller = new Controller();
+            Client client = new ClientImpl(controller);
+            new ChatFrame(controller, client::disconnect, () -> {
                 client.connect(Settings.getInstance().getServerIp(), Settings.getInstance().getPortToConnect());
             }).setVisible(true);
         });

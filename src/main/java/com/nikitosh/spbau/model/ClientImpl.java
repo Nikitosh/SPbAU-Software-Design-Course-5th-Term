@@ -5,14 +5,14 @@ import org.apache.logging.log4j.*;
 import java.io.*;
 import java.net.*;
 
-public class ChatClient implements Client {
-    private static final Logger LOGGER = LogManager.getLogger(ChatClient.class);
+public class ClientImpl implements Client {
+    private static final Logger LOGGER = LogManager.getLogger(ClientImpl.class);
 
     private Socket socket;
-    private Conversation conversation;
+    private Controller controller;
 
-    public ChatClient(Conversation conversation) {
-        this.conversation = conversation;
+    public ClientImpl(Controller controller) {
+        this.controller = controller;
     }
 
     @Override
@@ -26,13 +26,13 @@ public class ChatClient implements Client {
             LOGGER.error("Could not connect to server with given ip " + ip + ": " + exception.getMessage());
             return;
         }
-        conversation.runOnConnectToServer();
-        conversation.run(socket);
+        controller.runOnConnectToServer();
+        controller.run(socket);
     }
 
     @Override
     public void disconnect() {
-        conversation.stop();
+        controller.stop();
         if (socket == null) {
             return;
         }

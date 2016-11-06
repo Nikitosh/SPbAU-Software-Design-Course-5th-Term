@@ -16,14 +16,14 @@ public class ChatFrame extends JFrame {
     private JTextArea messageTextArea;
     private JButton sendButton;
 
-    public ChatFrame(Conversation conversation, Runnable onWindowClosed, Runnable onFrameCreated) {
+    public ChatFrame(Controller controller, Runnable onWindowClosed, Runnable onFrameCreated) {
         super(FRAME_NAME);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setJMenuBar(new MenuBar());
         add(buildChatInterfacePanel());
         pack();
         setLocationRelativeTo(null);
-        setCallbacks(conversation);
+        setCallbacks(controller);
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -56,17 +56,17 @@ public class ChatFrame extends JFrame {
         return panel;
     }
 
-    private void setCallbacks(Conversation conversation) {
-        conversation.setOnReceiveMessage(this::appendMessageToChatHistory);
-        conversation.setOnConnectToServer(() -> {
+    private void setCallbacks(Controller controller) {
+        controller.setOnReceiveMessage(this::appendMessageToChatHistory);
+        controller.setOnConnectToServer(() -> {
             chatHistoryTextArea.append("You connected to other user\n");
         });
-        conversation.setOnClientConnected(() -> {
+        controller.setOnClientConnected(() -> {
             chatHistoryTextArea.append("New user connected to you\n");
         });
         sendButton.addActionListener((ActionEvent actionEvent) -> {
             Message message = new Message(Settings.getInstance().getName(), messageTextArea.getText() + "\n");
-            conversation.sendMessage(message);
+            controller.sendMessage(message);
             appendMessageToChatHistory(message);
             messageTextArea.setText("");
         });
