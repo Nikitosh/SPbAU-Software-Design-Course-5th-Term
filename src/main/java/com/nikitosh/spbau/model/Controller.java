@@ -18,15 +18,15 @@ public class Controller {
     /**
      * Callback for receiving message.
      */
-    private Consumer<Message> onReceiveMessage;
+    private Consumer<Message> onReceiveMessage = (Message message) -> {};
     /**
      * Callback for connecting to server.
      */
-    private Runnable onConnectToServer;
+    private Runnable onConnectToServer = () -> {};
     /**
      * Callback for client connected.
      */
-    private Runnable onClientConnected;
+    private Runnable onClientConnected = () -> {};
     private DataOutputStream outputStream;
 
     /**

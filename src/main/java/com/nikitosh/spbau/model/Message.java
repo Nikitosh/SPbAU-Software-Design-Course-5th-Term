@@ -8,6 +8,8 @@ import java.io.*;
  */
 
 public class Message {
+    public static final int P = 239017;
+
     private String name;
     private String text;
 
@@ -44,5 +46,19 @@ public class Message {
      */
     public static Message read(DataInputStream inputStream) throws IOException {
         return new Message(inputStream.readUTF(), inputStream.readUTF());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Message)) {
+            return false;
+        }
+        Message message = (Message) obj;
+        return name.equals(message.name) && text.equals(message.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() * P + text.hashCode();
     }
 }
