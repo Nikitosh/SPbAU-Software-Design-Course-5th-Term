@@ -31,12 +31,14 @@ public class ClientImpl implements Client {
             LOGGER.error("Could not connect to server with given ip " + ip + ": " + exception.getMessage());
             return;
         }
+        LOGGER.info("Connected to server with ip " + ip);
         controller.runOnConnectToServer();
         controller.run(socket);
     }
 
     @Override
     public void disconnect() {
+        LOGGER.info("Disconnected from server");
         controller.stop();
         if (socket == null) {
             return;

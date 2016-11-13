@@ -62,6 +62,7 @@ public class Controller {
 
     private Message receiveMessage(DataInputStream inputStream) throws IOException {
         Message message = Message.read(inputStream);
+        LOGGER.info("Message was received");
         onReceiveMessage.accept(message);
         return message;
     }
@@ -78,6 +79,7 @@ public class Controller {
         }
         try {
             message.write(outputStream);
+            LOGGER.info("Message was sent");
         } catch (IOException exception) {
             return false;
         }

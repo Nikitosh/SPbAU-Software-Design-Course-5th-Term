@@ -28,12 +28,14 @@ public class ServerImpl implements Server {
     public void start() {
         try {
             serverSocket = new ServerSocket(port);
+            LOGGER.info("Server socket was created");
         } catch (IOException exception) {
             LOGGER.error("Failed to create ServerSocket: " + exception.getMessage());
             return;
         }
         try {
             socket = serverSocket.accept();
+            LOGGER.info("Client connected");
             controller.runOnClientConnected();
             controller.run(socket);
         } catch (IOException exception) {
