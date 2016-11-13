@@ -11,6 +11,11 @@ public class ClientImpl implements Client {
     private Socket socket;
     private Controller controller;
 
+    /**
+     * Creates new client.
+     *
+     * @param controller controller through which communication with server happens.
+     */
     public ClientImpl(Controller controller) {
         this.controller = controller;
     }

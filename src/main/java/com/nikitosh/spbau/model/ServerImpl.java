@@ -13,6 +13,12 @@ public class ServerImpl implements Server {
     private int port;
     private Controller controller;
 
+    /**
+     * Creates new server.
+     *
+     * @param controller controller through which communication with client happens.
+     * @param port port for creating server socket.
+     */
     public ServerImpl(Controller controller, int port) {
         this.controller = controller;
         this.port = port;

@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Frame used for choosing user's mode (server or client).
+ */
+
 public class ChooseModeFrame extends JFrame {
     private static final String FRAME_NAME = "Choose mode";
     private static final int FRAME_WIDTH = 320;
@@ -21,6 +25,11 @@ public class ChooseModeFrame extends JFrame {
         setLocationRelativeTo(null); //set JFrame to appear in center
     }
 
+    /**
+     * Builds panel with two buttons and it's handlers
+     *
+     * @return JPanel with interface
+     */
     private JPanel buildChooseButtonsPanel() {
         JPanel panel = new JPanel();
         JButton serverModeButton = new JButton("Server");

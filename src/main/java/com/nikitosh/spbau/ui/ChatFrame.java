@@ -16,6 +16,13 @@ public class ChatFrame extends JFrame {
     private JTextArea messageTextArea;
     private JButton sendButton;
 
+    /**
+     * Creates new frame with chat.
+     *
+     * @param controller controller through which all interaction with model happens.
+     * @param onWindowClosed callback on window closed.
+     * @param onFrameCreated callback on frame created.
+     */
     public ChatFrame(Controller controller, Runnable onWindowClosed, Runnable onFrameCreated) {
         super(FRAME_NAME);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -34,6 +41,11 @@ public class ChatFrame extends JFrame {
         new Thread(onFrameCreated).start();
     }
 
+    /**
+     * Builds main interface.
+     *
+     * @return JPanel with interface
+     */
     private JPanel buildChatInterfacePanel() {
         JPanel panel = new JPanel();
         chatHistoryTextArea = new JTextArea(CHAT_HISTORY_ROW_NUMBER, CHAT_HISTORY_COLUMN_NUMBER);

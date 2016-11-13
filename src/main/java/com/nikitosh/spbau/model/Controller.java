@@ -6,17 +6,34 @@ import java.io.*;
 import java.net.*;
 import java.util.function.*;
 
+/**
+ * Class which provides ability to communicate with another user (send and receive messages)
+ * and which is used for interaction between Model and UI.
+ */
+
 public class Controller {
     private static final Logger LOGGER = LogManager.getLogger(Controller.class);
 
     private volatile boolean isRunning = false;
+    /**
+     * Callback for receiving message.
+     */
     private Consumer<Message> onReceiveMessage;
+    /**
+     * Callback for connecting to server.
+     */
     private Runnable onConnectToServer;
+    /**
+     * Callback for client connected.
+     */
     private Runnable onClientConnected;
     private DataOutputStream outputStream;
 
-    public Controller() {}
-
+    /**
+     * Runs conversation between two users by trying to read new messages from another user.
+     *
+     * @param socket socket used for communication with another user.
+     */
     public void run(Socket socket) {
         isRunning = true;
         DataInputStream inputStream;
@@ -36,6 +53,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Stops conversation if it was in progress.
+     */
     public void stop() {
         isRunning = false;
     }
@@ -46,6 +66,12 @@ public class Controller {
         return message;
     }
 
+    /**
+     * Tries to send message to another user.
+     *
+     * @param message message should be sent.
+     * @return if message was sent or not.
+     */
     public boolean sendMessage(Message message) {
         if (outputStream == null) {
             return false;

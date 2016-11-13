@@ -1,5 +1,9 @@
 package com.nikitosh.spbau.model;
 
+/**
+ * Singleton settings class, which provides access to change name, server IP and ports.
+ */
+
 public final class Settings {
     private static Settings instance;
     private String name = "Name";

@@ -7,29 +7,33 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.net.*;
 
+/**
+ * Frame for changing settings like name, server's IP and ports.
+ */
+
 public class SettingsDialog extends JDialog {
     public SettingsDialog(Settings settings) {
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setHorizontalAlignment(JLabel.RIGHT);
-        JTextField nameTextField = new JTextField(Settings.getInstance().getName());
+        JTextField nameTextField = new JTextField(settings.getName());
 
         JLabel serverIpLabel = new JLabel("Server IP:");
         serverIpLabel.setHorizontalAlignment(JLabel.RIGHT);
         JTextField serverIpTextField;
         try {
             serverIpTextField = new JTextField(
-                    InetAddress.getByAddress(Settings.getInstance().getServerIp()).getHostAddress());
+                    InetAddress.getByAddress(settings.getServerIp()).getHostAddress());
         } catch (UnknownHostException exception) {
             return;
         }
 
         JLabel serverPortLabel = new JLabel("Server port:");
         serverPortLabel.setHorizontalAlignment(JLabel.RIGHT);
-        JTextField serverPortTextField = new JTextField(String.valueOf(Settings.getInstance().getServerPort()));
+        JTextField serverPortTextField = new JTextField(String.valueOf(settings.getServerPort()));
 
         JLabel portToConnectLabel = new JLabel("Port to connect:");
         portToConnectLabel.setHorizontalAlignment(JLabel.RIGHT);
-        JTextField portToConnectTextField = new JTextField(String.valueOf(Settings.getInstance().getPortToConnect()));
+        JTextField portToConnectTextField = new JTextField(String.valueOf(settings.getPortToConnect()));
 
         JButton okButton = new JButton("Ok");
         okButton.addActionListener((ActionEvent actionEvent) -> {
@@ -62,7 +66,7 @@ public class SettingsDialog extends JDialog {
         pane.add(labelTextFieldPanel);
         pane.add(okButtonPanel);
         pack();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); //set JDialog to appear in center
     }
 
     private void addComponentsToPanel(JPanel panel, Component... components) {
