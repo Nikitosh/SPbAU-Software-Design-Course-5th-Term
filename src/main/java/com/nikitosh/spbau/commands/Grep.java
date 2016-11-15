@@ -12,6 +12,10 @@ import java.util.regex.*;
 
 /**
  * Implements <i> grep </i> command.
+ * Supports 3 parameters:
+ * <i> -i </i> for case insensitivity.
+ * <i> -w </i> for search of only whole words.
+ * <i> -A </i> for printing some lines right after matching line.
  */
 
 public class Grep implements Command {

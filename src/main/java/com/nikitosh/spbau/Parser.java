@@ -12,13 +12,13 @@ import java.util.stream.*;
  */
 
 public class Parser {
-    private static final Map<String, Command> COMMANDS = new HashMap<String, Command>() {
+    private static final Map<String, Supplier<Command>> COMMANDS = new HashMap<String, Supplier<Command>>() {
         {
-            put("cat", new Cat());
-            put("echo", new Echo());
-            put("grep", new Grep());
-            put("pwd", new Pwd());
-            put("wc", new Wc());
+            put("cat", Cat::new);
+            put("echo", Echo::new);
+            put("grep", Grep::new);
+            put("pwd", Pwd::new);
+            put("wc", Wc::new);
         }
     };
 
@@ -75,7 +75,7 @@ public class Parser {
             Command command;
             List<Lexeme> arguments;
             if (COMMANDS.containsKey(firstLexeme.getContent())) {
-                command = COMMANDS.get(firstLexeme.getContent());
+                command = COMMANDS.get(firstLexeme.getContent()).get();
                 arguments = commandList.subList(1, commandList.size());
             } else {
                 command = new ExternalCall();
