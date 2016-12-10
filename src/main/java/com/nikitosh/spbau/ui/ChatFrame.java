@@ -12,9 +12,11 @@ public class ChatFrame extends JFrame {
     private static final int CHAT_HISTORY_COLUMN_NUMBER = 50;
     private static final int MESSAGE_TEXT_ROW_NUMBER = 6;
 
+    private Controller controller;
     private JTextArea chatHistoryTextArea;
     private JTextArea messageTextArea;
     private JButton sendButton;
+    private JLabel typingNotificationLabel;
 
     /**
      * Creates new frame with chat.
@@ -25,12 +27,13 @@ public class ChatFrame extends JFrame {
      */
     public ChatFrame(Controller controller, Runnable onWindowClosed, Runnable onFrameCreated) {
         super(FRAME_NAME);
+        this.controller = controller;
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setJMenuBar(new MenuBar());
         add(buildChatInterfacePanel());
         pack();
         setLocationRelativeTo(null); //set JFrame to appear in center
-        setCallbacks(controller);
+        setCallbacks();
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -54,19 +57,29 @@ public class ChatFrame extends JFrame {
 
         messageTextArea = new JTextArea(MESSAGE_TEXT_ROW_NUMBER, CHAT_HISTORY_COLUMN_NUMBER);
         messageTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        messageTextArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                controller.sendTypingNotification(Settings.getInstance().getName());
+            }
+        });
 
         sendButton = new JButton("Send");
+
+        typingNotificationLabel = new JLabel(" ");
 
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         Box horizontalBox = Box.createHorizontalBox();
         horizontalBox.add(new JScrollPane(messageTextArea));
         horizontalBox.add(sendButton);
         panel.add(new JScrollPane(chatHistoryTextArea));
+        panel.add(typingNotificationLabel);
         panel.add(horizontalBox);
         return panel;
     }
 
-    private void setCallbacks(Controller controller) {
+    private void setCallbacks() {
         controller.setOnReceiveMessage(this::appendMessageToChatHistory);
         controller.setOnConnectToServer(() -> {
             chatHistoryTextArea.append("You connected to other user\n");
@@ -82,6 +95,14 @@ public class ChatFrame extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "You're not connected to anybody", "Warning",
                         JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+        controller.setOnReceiveTypingNotification((String name) -> {
+            if (!name.equals("")) {
+                typingNotificationLabel.setText(name + " is typing...");
+            } else {
+                typingNotificationLabel.setText(" ");
             }
         });
     }

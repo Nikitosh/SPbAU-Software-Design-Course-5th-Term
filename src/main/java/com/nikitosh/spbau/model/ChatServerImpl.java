@@ -48,8 +48,30 @@ public class ChatServerImpl implements ChatServer {
             return new StreamObserver<Message>() {
                 @Override
                 public void onNext(Message message) {
-                    ChatServerImpl.this.controller.receiveMessage(new ChatMessage(message.getName(), message.getText()));
+                    ChatServerImpl.this.controller.receiveMessage(
+                            new ChatMessage(message.getName(), message.getText()));
                     ChatServerImpl.this.controller.setOutputStreamObserver(responseObserver);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    LOGGER.warn("Exception in ChatService: " + throwable.getMessage());
+                }
+
+                @Override
+                public void onCompleted() {
+                    responseObserver.onCompleted();
+                }
+            };
+        }
+
+        @Override
+        public StreamObserver<TypingNotification> typing(StreamObserver<TypingNotification> responseObserver) {
+            return new StreamObserver<TypingNotification>() {
+                @Override
+                public void onNext(TypingNotification typingNotification) {
+                    ChatServerImpl.this.controller.receiveTypingNotification(typingNotification.getName());
+                    ChatServerImpl.this.controller.setTypingNotificationStreamObserver(responseObserver);
                 }
 
                 @Override

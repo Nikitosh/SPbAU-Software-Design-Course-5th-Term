@@ -1,9 +1,10 @@
 package com.nikitosh.spbau.model;
 
-import com.nikitosh.spbau.proto.Message;
+import com.nikitosh.spbau.proto.*;
 import io.grpc.stub.StreamObserver;
 import org.apache.logging.log4j.*;
 
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -13,26 +14,62 @@ import java.util.function.Consumer;
 
 public class Controller {
     private static final Logger LOGGER = LogManager.getLogger(Controller.class);
+    private static final int DELAY = 1000;
+    private static final int TIMEOUT = 3000;
 
     private StreamObserver<Message> outputStreamObserver;
+    private StreamObserver<TypingNotification> typingNotificationStreamObserver;
+
+    private String userName;
+    private long userTypingTime;
+
+    public Controller() {
+        /**
+         * Timer task for updating typing notification info.
+         */
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (System.currentTimeMillis() > userTypingTime + TIMEOUT) {
+                    userName = "";
+                }
+                onReceiveTypingNotification.accept(userName);
+            }
+        }, DELAY, TIMEOUT);
+    }
 
     /**
      * Callback for receiving message.
      */
     private Consumer<ChatMessage> onReceiveMessage = (ChatMessage message) -> {};
     /**
+     * Callback for receiving message.
+     */
+    private Consumer<String> onReceiveTypingNotification = (String name) -> {};
+    /**
      * Callback for connecting to server.
      */
     private Runnable onConnectToServer = () -> {};
-    /**
-     * Callback for client connected.
-     */
-    private Runnable onClientConnected = () -> {};
 
-    public ChatMessage receiveMessage(ChatMessage message) {
-        LOGGER.info("ChatMessage was received");
+    /**
+     * Receives given message.
+     *
+     * @param message received message.
+     */
+    public void receiveMessage(ChatMessage message) {
+        LOGGER.info("Message was received");
         onReceiveMessage.accept(message);
-        return message;
+    }
+
+    /**
+     * Receives given typing notification.
+     *
+     * @param name name of sender.
+     */
+    public void receiveTypingNotification(String name) {
+        LOGGER.info("Typing Notification was received");
+        userName = name;
+        userTypingTime = System.currentTimeMillis();
     }
 
     /**
@@ -49,8 +86,26 @@ public class Controller {
         return true;
     }
 
+    /**
+     * Tries to send typing notification to another user.
+     *
+     * @param name name of current user.
+     * @return if notification was sent or not.
+     */
+    public boolean sendTypingNotification(String name) {
+        if (typingNotificationStreamObserver == null) {
+            return false;
+        }
+        typingNotificationStreamObserver.onNext(TypingNotification.newBuilder().setName(name).build());
+        return true;
+    }
+
     public void setOnReceiveMessage(Consumer<ChatMessage> onReceiveMessage) {
         this.onReceiveMessage = onReceiveMessage;
+    }
+
+    public void setOnReceiveTypingNotification(Consumer<String> onReceiveTypingNotification) {
+        this.onReceiveTypingNotification = onReceiveTypingNotification;
     }
 
     public void setOnConnectToServer(Runnable onConnectToServer) {
@@ -61,7 +116,12 @@ public class Controller {
         onConnectToServer.run();
     }
 
-    public void setOutputStreamObserver(StreamObserver<Message> streamObserver) {
-        this.outputStreamObserver = streamObserver;
+    public void setOutputStreamObserver(StreamObserver<Message> outputStreamObserver) {
+        this.outputStreamObserver = outputStreamObserver;
+    }
+
+    public void setTypingNotificationStreamObserver(
+            StreamObserver<TypingNotification> typingNotificationStreamObserver) {
+        this.typingNotificationStreamObserver = typingNotificationStreamObserver;
     }
 }

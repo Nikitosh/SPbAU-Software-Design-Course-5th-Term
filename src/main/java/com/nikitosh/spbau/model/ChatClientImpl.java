@@ -31,6 +31,7 @@ public class ChatClientImpl implements ChatClient {
                 InetAddress.getByAddress(ip).getHostAddress(), port).usePlaintext(true);
             channel = channelBuilder.build();
             ChatGrpc.ChatStub asyncStub = ChatGrpc.newStub(channel);
+
             StreamObserver<Message> outputStreamObserver = asyncStub.chat(new StreamObserver<Message>() {
                 @Override
                 public void onNext(Message message) {
@@ -47,8 +48,26 @@ public class ChatClientImpl implements ChatClient {
 
             });
             controller.setOutputStreamObserver(outputStreamObserver);
-            controller.runOnConnectToServer();
 
+            StreamObserver<TypingNotification> typingNotificationStreamObserver = asyncStub.typing(
+                    new StreamObserver<TypingNotification>() {
+                @Override
+                public void onNext(TypingNotification typingNotification) {
+                    controller.receiveTypingNotification(typingNotification.getName());
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    LOGGER.warn("Exception in ChatService: " + throwable.getMessage());
+                }
+
+                @Override
+                public void onCompleted() {}
+
+            });
+            controller.setTypingNotificationStreamObserver(typingNotificationStreamObserver);
+
+            controller.runOnConnectToServer();
         } catch (UnknownHostException exception) {
             LOGGER.error("Could not determine server with given ip " + ip + ": " + exception.getMessage());
             return;
