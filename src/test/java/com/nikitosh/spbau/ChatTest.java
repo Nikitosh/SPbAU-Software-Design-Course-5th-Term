@@ -45,8 +45,9 @@ public class ChatTest {
         ChatMessage serverMessage1 = new ChatMessage("Username1", "message1");
         ChatMessage clientMessage1 = new ChatMessage("Username2", "message2");
         ChatMessage clientMessage2 = new ChatMessage("Username2", "message3");
-        serverController.sendMessage(serverMessage1);
         clientController.sendMessage(clientMessage1);
+        Thread.sleep(DELAY);
+        serverController.sendMessage(serverMessage1);
         clientController.sendMessage(clientMessage2);
 
         client.disconnect();
