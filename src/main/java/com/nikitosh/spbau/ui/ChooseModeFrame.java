@@ -32,16 +32,16 @@ public class ChooseModeFrame extends JFrame {
      */
     private JPanel buildChooseButtonsPanel() {
         JPanel panel = new JPanel();
-        JButton serverModeButton = new JButton("Server");
+        JButton serverModeButton = new JButton("ChatServer");
         serverModeButton.addActionListener((ActionEvent actionEvent) -> {
             Controller controller = new Controller();
-            Server server = new ServerImpl(controller, Settings.getInstance().getServerPort());
+            ChatServer server = new ChatServerImpl(controller, Settings.getInstance().getServerPort());
             new ChatFrame(controller, server::stop, server::start).setVisible(true);
         });
-        JButton clientModeButton = new JButton("Client");
+        JButton clientModeButton = new JButton("ChatClient");
         clientModeButton.addActionListener((ActionEvent actionEvent) -> {
             Controller controller = new Controller();
-            Client client = new ClientImpl(controller);
+            ChatClient client = new ChatClientImpl(controller);
             new ChatFrame(controller, client::disconnect, () ->
                     client.connect(Settings.getInstance().getServerIp(), Settings.getInstance().getPortToConnect()))
                     .setVisible(true);

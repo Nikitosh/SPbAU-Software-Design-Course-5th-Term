@@ -4,7 +4,7 @@ package com.nikitosh.spbau.model;
  * Interface for user being server.
  */
 
-public interface Server {
+public interface ChatServer {
     /**
      * Launches server by creating server socket.
      */

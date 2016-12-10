@@ -4,7 +4,7 @@ package com.nikitosh.spbau.model;
  * Interface for user being client.
  */
 
-public interface Client {
+public interface ChatClient {
     /**
      * Connects to server with given IP and port.
      *

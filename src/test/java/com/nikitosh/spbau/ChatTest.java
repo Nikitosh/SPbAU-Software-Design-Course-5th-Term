@@ -16,38 +16,35 @@ public class ChatTest {
     @Test
     public void testConnect() throws InterruptedException {
         Controller serverController = new Controller();
-        Runnable onClientConnectedCallback = mock(Runnable.class);
-        serverController.setOnClientConnected(onClientConnectedCallback);
-        Server server = createStartedServer(serverController);
+        ChatServer server = createStartedServer(serverController);
 
         Controller clientController = new Controller();
         Runnable onConnectToServerCallback = mock(Runnable.class);
         clientController.setOnConnectToServer(onConnectToServerCallback);
-        Client client = createConnectedClient(clientController);
+        ChatClient client = createConnectedClient(clientController);
 
         client.disconnect();
         server.stop();
 
-        verify(onClientConnectedCallback).run();
         verify(onConnectToServerCallback).run();
     }
 
     @Test
     public void testSendMessage() throws InterruptedException {
         Controller serverController = new Controller();
-        Server server = createStartedServer(serverController);
+        ChatServer server = createStartedServer(serverController);
 
         Controller clientController = new Controller();
-        Client client = createConnectedClient(clientController);
+        ChatClient client = createConnectedClient(clientController);
 
-        final List<Message> serverMessages = new ArrayList<>();
+        final List<ChatMessage> serverMessages = new ArrayList<>();
         serverController.setOnReceiveMessage(serverMessages::add);
-        final List<Message> clientMessages = new ArrayList<>();
+        final List<ChatMessage> clientMessages = new ArrayList<>();
         clientController.setOnReceiveMessage(clientMessages::add);
 
-        Message serverMessage1 = new Message("Username1", "message1");
-        Message clientMessage1 = new Message("Username2", "message2");
-        Message clientMessage2 = new Message("Username2", "message3");
+        ChatMessage serverMessage1 = new ChatMessage("Username1", "message1");
+        ChatMessage clientMessage1 = new ChatMessage("Username2", "message2");
+        ChatMessage clientMessage2 = new ChatMessage("Username2", "message3");
         serverController.sendMessage(serverMessage1);
         clientController.sendMessage(clientMessage1);
         clientController.sendMessage(clientMessage2);
@@ -59,15 +56,15 @@ public class ChatTest {
         assertEquals(clientMessages, Arrays.asList(serverMessage1));
     }
 
-    private Server createStartedServer(Controller controller) throws InterruptedException {
-        Server server = new ServerImpl(controller, SERVER_PORT);
+    private ChatServer createStartedServer(Controller controller) throws InterruptedException {
+        ChatServer server = new ChatServerImpl(controller, SERVER_PORT);
         new Thread(server::start).start();
         Thread.sleep(DELAY);
         return server;
     }
 
-    private Client createConnectedClient(Controller controller) throws InterruptedException {
-        Client client = new ClientImpl(controller);
+    private ChatClient createConnectedClient(Controller controller) throws InterruptedException {
+        ChatClient client = new ChatClientImpl(controller);
         new Thread(() -> {
             client.connect(LOCALHOST, SERVER_PORT);
         }).start();

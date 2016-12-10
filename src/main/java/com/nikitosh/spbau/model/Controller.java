@@ -1,10 +1,10 @@
 package com.nikitosh.spbau.model;
 
+import com.nikitosh.spbau.proto.Message;
+import io.grpc.stub.StreamObserver;
 import org.apache.logging.log4j.*;
 
-import java.io.*;
-import java.net.*;
-import java.util.function.*;
+import java.util.function.Consumer;
 
 /**
  * Class which provides ability to communicate with another user (send and receive messages)
@@ -14,11 +14,12 @@ import java.util.function.*;
 public class Controller {
     private static final Logger LOGGER = LogManager.getLogger(Controller.class);
 
-    private volatile boolean isRunning = false;
+    private StreamObserver<Message> outputStreamObserver;
+
     /**
      * Callback for receiving message.
      */
-    private Consumer<Message> onReceiveMessage = (Message message) -> {};
+    private Consumer<ChatMessage> onReceiveMessage = (ChatMessage message) -> {};
     /**
      * Callback for connecting to server.
      */
@@ -27,42 +28,9 @@ public class Controller {
      * Callback for client connected.
      */
     private Runnable onClientConnected = () -> {};
-    private DataOutputStream outputStream;
 
-    /**
-     * Runs conversation between two users by trying to read new messages from another user.
-     *
-     * @param socket socket used for communication with another user.
-     */
-    public void run(Socket socket) {
-        isRunning = true;
-        DataInputStream inputStream;
-        try {
-            inputStream = new DataInputStream(socket.getInputStream());
-            outputStream = new DataOutputStream(socket.getOutputStream());
-        } catch (IOException exception) {
-            LOGGER.error("Failed to get streams from socket: " + exception.getMessage());
-            return;
-        }
-        while (isRunning) {
-            try {
-                receiveMessage(inputStream);
-            } catch (IOException exception) {
-                LOGGER.warn("Failed to receive new message: " + exception.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Stops conversation if it was in progress.
-     */
-    public void stop() {
-        isRunning = false;
-    }
-
-    private Message receiveMessage(DataInputStream inputStream) throws IOException {
-        Message message = Message.read(inputStream);
-        LOGGER.info("Message was received");
+    public ChatMessage receiveMessage(ChatMessage message) {
+        LOGGER.info("ChatMessage was received");
         onReceiveMessage.accept(message);
         return message;
     }
@@ -73,20 +41,15 @@ public class Controller {
      * @param message message should be sent.
      * @return if message was sent or not.
      */
-    public boolean sendMessage(Message message) {
-        if (outputStream == null) {
+    public boolean sendMessage(ChatMessage message) {
+        if (outputStreamObserver == null) {
             return false;
         }
-        try {
-            message.write(outputStream);
-            LOGGER.info("Message was sent");
-        } catch (IOException exception) {
-            return false;
-        }
+        outputStreamObserver.onNext(Message.newBuilder().setName(message.getName()).setText(message.getText()).build());
         return true;
     }
 
-    public void setOnReceiveMessage(Consumer<Message> onReceiveMessage) {
+    public void setOnReceiveMessage(Consumer<ChatMessage> onReceiveMessage) {
         this.onReceiveMessage = onReceiveMessage;
     }
 
@@ -94,15 +57,11 @@ public class Controller {
         this.onConnectToServer = onConnectToServer;
     }
 
-    public void setOnClientConnected(Runnable onClientConnected) {
-        this.onClientConnected = onClientConnected;
-    }
-
     public void runOnConnectToServer() {
         onConnectToServer.run();
     }
 
-    public void runOnClientConnected() {
-        onClientConnected.run();
+    public void setOutputStreamObserver(StreamObserver<Message> streamObserver) {
+        this.outputStreamObserver = streamObserver;
     }
 }

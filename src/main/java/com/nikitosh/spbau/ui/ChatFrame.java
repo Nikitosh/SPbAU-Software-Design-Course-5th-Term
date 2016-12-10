@@ -71,14 +71,11 @@ public class ChatFrame extends JFrame {
         controller.setOnConnectToServer(() -> {
             chatHistoryTextArea.append("You connected to other user\n");
         });
-        controller.setOnClientConnected(() -> {
-            chatHistoryTextArea.append("New user connected to you\n");
-        });
         sendButton.addActionListener((ActionEvent actionEvent) -> {
             if (messageTextArea.getText().isEmpty()) { //doesn't allow to send empty messages
                 return;
             }
-            Message message = new Message(Settings.getInstance().getName(), messageTextArea.getText() + "\n");
+            ChatMessage message = new ChatMessage(Settings.getInstance().getName(), messageTextArea.getText() + "\n");
             if (controller.sendMessage(message)) { //message was sent successfully
                 appendMessageToChatHistory(message);
                 messageTextArea.setText("");
@@ -89,7 +86,7 @@ public class ChatFrame extends JFrame {
         });
     }
 
-    private void appendMessageToChatHistory(Message message) {
+    private void appendMessageToChatHistory(ChatMessage message) {
         chatHistoryTextArea.append(message.getName() + ": " + message.getText());
     }
 }
