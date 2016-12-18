@@ -1,8 +1,10 @@
 package com.nikitosh.spbau.model.world;
 
-public class Position {
-    private int[] xShift = {0, 1, 0, -1};
-    private int[] yShift = {-1, 0, 1, 0};
+public class  Position {
+    private static final int P = 239017;
+
+    private int[] xShift = {0, 1, 0, -1, 0};
+    private int[] yShift = {-1, 0, 1, 0, 0};
 
     private int x;
     private int y;
@@ -13,14 +15,33 @@ public class Position {
     }
 
     public enum Movement {
-        MOVEMENT_UP,
-        MOVEMENT_RIGHT,
-        MOVEMENT_DOWN,
-        MOVEMENT_LEFT
+        UP,
+        RIGHT,
+        DOWN,
+        LEFT,
+        NONE
     };
 
-    public void move(Movement movement) {
-        x += xShift[movement.ordinal()];
-        y += yShift[movement.ordinal()];
+    public void move(WorldMap map, Movement movement) {
+        int newX = x + xShift[movement.ordinal()];
+        int newY = y + yShift[movement.ordinal()];
+        if (map.isEmptyCell(newX, newY)) {
+            x = newX;
+            y = newY;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Position)) {
+            return false;
+        }
+        Position position = (Position) obj;
+        return x == position.x && y == position.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return x * P + y;
     }
 }
