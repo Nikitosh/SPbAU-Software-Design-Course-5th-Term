@@ -35,6 +35,19 @@ public class World {
         }
     }
 
+    public WorldMap getWorldMap() {
+        return map;
+    }
+
+    public List<Creature> getAllCreatures() {
+        List<Creature> allCreatures = new ArrayList<>();
+        for (Mob mob : mobs) {
+            allCreatures.add(mob);
+        }
+        allCreatures.add(hero);
+        return allCreatures;
+    }
+
     private void generateHero() {
         if (emptyPositions.isEmpty()) {
             throw new RuntimeException("No available cell for generating hero");
@@ -62,7 +75,7 @@ public class World {
         if (currentEmptyPositions.isEmpty()) {
             throw new RuntimeException("No available cell for generating mob");
         }
-        Position mobPosition = currentEmptyPositions.get(random.nextInt(emptyPositions.size()));
+        Position mobPosition = currentEmptyPositions.get(random.nextInt(currentEmptyPositions.size()));
         mobs.add(mobFactory.createRandom(mobPosition, random));
     }
 

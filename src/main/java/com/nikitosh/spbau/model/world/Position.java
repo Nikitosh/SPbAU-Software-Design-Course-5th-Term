@@ -17,10 +17,20 @@ public class  Position {
     public void move(WorldMap map, Movement movement) {
         int newX = x + xShift[movement.ordinal()];
         int newY = y + yShift[movement.ordinal()];
-        if (map.isEmptyCell(newX, newY)) {
-            x = newX;
-            y = newY;
-        }
+        try {
+            if (map.isEmptyCell(newX, newY)) {
+                x = newX;
+                y = newY;
+            }
+        } catch (IndexOutOfBoundsException ignored) {}
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     @Override

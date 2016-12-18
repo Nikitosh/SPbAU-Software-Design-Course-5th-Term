@@ -9,7 +9,7 @@ import java.util.function.*;
 
 public class Game {
     private World world;
-    private Strategy playerStrategy = new KeyboardInputListener();
+    private KeyboardInputListener playerStrategy = new KeyboardInputListener();
     private Strategy mobsStrategy = new RandomStrategy();
 
     public Consumer<World> onRender = (world) -> {};
@@ -27,5 +27,13 @@ public class Game {
 
     public void setOnRender(Consumer<World> onRender) {
         this.onRender = onRender;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public KeyboardInputListener getPlayerStrategy() {
+        return playerStrategy;
     }
 }
