@@ -1,4 +1,4 @@
-package com.nikitosh.spbau.model.gameobjects.creatures;
+package com.nikitosh.spbau.model.gameobjects;
 
 public class Attributes {
     private int health;

@@ -1,6 +1,8 @@
 package com.nikitosh.spbau.model.gameobjects.creatures;
 
+import com.nikitosh.spbau.model.gameobjects.*;
 import com.nikitosh.spbau.model.world.*;
+import com.nikitosh.spbau.ui.visitors.*;
 
 public class Troll extends Mob {
     private static final int HEALTH = 10;
@@ -11,5 +13,10 @@ public class Troll extends Mob {
 
     public Troll(Position position) {
         super(position, ATTRIBUTES);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

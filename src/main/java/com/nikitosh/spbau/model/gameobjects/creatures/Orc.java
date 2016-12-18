@@ -1,6 +1,8 @@
 package com.nikitosh.spbau.model.gameobjects.creatures;
 
+import com.nikitosh.spbau.model.gameobjects.*;
 import com.nikitosh.spbau.model.world.*;
+import com.nikitosh.spbau.ui.visitors.*;
 
 public class Orc extends Mob {
     private static final int HEALTH = 5;
@@ -13,5 +15,10 @@ public class Orc extends Mob {
 
     public Orc(Position position) {
         super(position, ATTRIBUTES);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }
