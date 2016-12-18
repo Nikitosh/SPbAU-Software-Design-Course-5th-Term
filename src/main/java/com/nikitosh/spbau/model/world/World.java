@@ -1,6 +1,7 @@
 package com.nikitosh.spbau.model.world;
 
 import com.nikitosh.spbau.model.gameobjects.creatures.*;
+import com.nikitosh.spbau.model.strategies.*;
 
 import java.util.*;
 
@@ -8,7 +9,7 @@ public class World {
     private int MOB_AMOUNT = 3;
     private WorldMap map;
     private Hero hero;
-    private List<Mob> mobs;
+    private List<Mob> mobs = new ArrayList<>();
     private List<Position> emptyPositions;
     private Random random = new Random();
     private MobFactory mobFactory = new MobFactory();
@@ -19,6 +20,18 @@ public class World {
         generateHero();
         for (int i = 0; i < MOB_AMOUNT; i++) {
             generateMob();
+        }
+    }
+
+    public void makeTurn(Strategy playerStrategy, Strategy mobsStrategy) {
+        Movement heroMovement = playerStrategy.getMove(hero, this);
+        hero.move(map, heroMovement);
+        List<Movement> mobsMovements = new ArrayList<>();
+        for (Mob mob : mobs) {
+            mobsMovements.add(mobsStrategy.getMove(mob, this));
+        }
+        for (int i = 0; i < mobs.size(); i++) {
+            mobs.get(i).move(map, mobsMovements.get(i));
         }
     }
 

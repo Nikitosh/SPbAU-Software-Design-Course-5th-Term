@@ -22,6 +22,7 @@ public class WorldMap {
         height = scanner.nextInt();
         width = scanner.nextInt();
         cells = new CellType[height][width];
+        scanner.nextLine();
         for (int i = 0; i < height; i++) {
             String s = scanner.nextLine();
             for (int j = 0; j < width; j++) {
