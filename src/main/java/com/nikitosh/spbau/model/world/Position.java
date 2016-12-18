@@ -14,14 +14,6 @@ public class  Position {
         this.y = y;
     }
 
-    public enum Movement {
-        UP,
-        RIGHT,
-        DOWN,
-        LEFT,
-        NONE
-    };
-
     public void move(WorldMap map, Movement movement) {
         int newX = x + xShift[movement.ordinal()];
         int newY = y + yShift[movement.ordinal()];

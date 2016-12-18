@@ -5,7 +5,7 @@ import com.nikitosh.spbau.model.world.*;
 
 public class EmptyStrategy implements Strategy {
     @Override
-    public Position.Movement getMove(Creature creature, World world) {
-        return Position.Movement.NONE;
+    public Movement getMove(Creature creature, World world) {
+        return Movement.NONE;
     }
 }

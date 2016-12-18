@@ -9,7 +9,7 @@ public class RandomStrategy implements Strategy {
     private Random random = new Random();
 
     @Override
-    public Position.Movement getMove(Creature creature, World world) {
-        return Position.Movement.values()[random.nextInt(Position.Movement.values().length)];
+    public Movement getMove(Creature creature, World world) {
+        return Movement.values()[random.nextInt(Movement.values().length)];
     }
 }
