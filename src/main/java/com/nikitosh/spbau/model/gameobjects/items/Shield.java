@@ -5,6 +5,9 @@ import com.nikitosh.spbau.model.world.*;
 import com.nikitosh.spbau.ui.visitors.*;
 
 public class Shield extends Item {
+    /**
+     * Shield attributes.
+     */
     private static final String NAME = "Shield";
     private static final int ATTACK = -1;
     private static final int DEFENSE = 2;

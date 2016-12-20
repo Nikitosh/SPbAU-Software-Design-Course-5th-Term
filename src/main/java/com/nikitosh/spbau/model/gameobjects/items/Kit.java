@@ -5,6 +5,9 @@ import com.nikitosh.spbau.model.world.*;
 import com.nikitosh.spbau.ui.visitors.*;
 
 public class Kit extends Item {
+    /**
+     * Kit attributes.
+     */
     private static final String NAME = "Kit";
     private static final int HEALTH = 5;
     private static final Attributes ATTRIBUTES = new Attributes.Builder()

@@ -5,6 +5,9 @@ import com.nikitosh.spbau.model.world.*;
 import com.nikitosh.spbau.ui.visitors.*;
 
 public class Orc extends Mob {
+    /**
+     * Orc attributes.
+     */
     private static final int HEALTH = 5;
     private static final int ATTACK = 1;
     private static final int DEFENSE = 1;

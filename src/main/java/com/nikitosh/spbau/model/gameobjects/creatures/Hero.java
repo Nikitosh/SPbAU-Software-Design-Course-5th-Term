@@ -8,6 +8,9 @@ import com.nikitosh.spbau.ui.visitors.*;
 import java.util.*;
 
 public class Hero extends Creature {
+    /**
+     * Hero attributes.
+     */
     private static final int HEALTH = 10;
     private static final int ATTACK = 2;
     private static final int DEFENSE = 1;
@@ -17,6 +20,9 @@ public class Hero extends Creature {
             .defense(DEFENSE)
             .build();
 
+    /**
+     * List of all hero's items at the moment.
+     */
     private List<Item> inventory = new ArrayList<>();
 
     public Hero(Position position) {
@@ -28,10 +34,20 @@ public class Hero extends Creature {
         visitor.visit(this);
     }
 
+    /**
+     * Adds item to inventory.
+     *
+     * @param item item to be added to inventory.
+     */
     public void addItem(Item item) {
         inventory.add(item);
     }
 
+    /**
+     * Applies item from inventory by index.
+     *
+     * @param index index of item in the inventory item's list should be applied.
+     */
     public void applyItemFromInventory(int index) {
         if (index >= inventory.size()) {
             return;
