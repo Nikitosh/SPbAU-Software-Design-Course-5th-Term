@@ -7,6 +7,11 @@ import com.nikitosh.spbau.model.world.*;
 import java.awt.event.*;
 import java.util.*;
 
+/**
+ * Implements input controller for keyboard.
+ * Uses "wasd" to move and "1-9" to use inventory.
+ */
+
 public class KeyboardInputListener extends KeyAdapter implements Strategy {
     private static final Map<Character, Movement> MOVEMENTS = new HashMap<Character, Movement>() {{
         put('w', Movement.UP);
@@ -15,13 +20,21 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
         put('d', Movement.RIGHT);
     }};
 
+    /**
+     * Stores not yet handled key events.
+     */
     private Queue<KeyEvent> pressedKeys = new LinkedList<>();
 
     @Override
     public Movement getMove(Creature creature, World world) {
+        //It's guaranteed that given creature is hero.
+        if (!(creature instanceof Hero)) {
+            throw new RuntimeException("Given creature is not a Hero instance");
+        }
         Hero hero = (Hero) creature;
         synchronized (pressedKeys) {
             while (true) {
+                //Waits until we can make a move.
                 while (pressedKeys.isEmpty()) {
                     try {
                         pressedKeys.wait();
@@ -38,6 +51,11 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
         }
     }
 
+
+    /**
+     * Just adds new key events to queue for handling (it will be handled when getMove will be performed).
+     * @param event
+     */
     @Override
     public void keyPressed(KeyEvent event) {
         synchronized (pressedKeys) {
@@ -46,6 +64,13 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
         }
     }
 
+    /**
+     * Handles key event.
+     *
+     * @param event key event to handle.
+     * @param hero hero to whom some actions could be applied.
+     * @return whether given key event was a Movement.
+     */
     private Movement processEvent(KeyEvent event, Hero hero) {
         char symbol = event.getKeyChar();
         if (MOVEMENTS.containsKey(symbol)) {
@@ -57,6 +82,11 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
         return null;
     }
 
+    /**
+     * Determines whether symbol activates inventory.
+     * @param symbol given symbol to check.
+     * @return whether symbol activates inventory.
+     */
     private boolean isInventoryKey(char symbol) {
         return symbol >= '1' && symbol <= '9';
     }

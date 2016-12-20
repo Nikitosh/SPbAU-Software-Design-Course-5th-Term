@@ -5,6 +5,10 @@ import com.nikitosh.spbau.model.world.*;
 
 import java.util.*;
 
+/**
+ * Implements random strategy, for every creature it moves randomly.
+ */
+
 public class RandomStrategy implements Strategy {
     private Random random = new Random();
 
