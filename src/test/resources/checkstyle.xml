@@ -145,7 +145,7 @@
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber">
-            <property name="ignoreNumbers" value="0, 1, 2, 3, 4"/>
+            <property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 4"/>
         </module>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
@@ -156,7 +156,9 @@
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
-        <module name="VisibilityModifier"/>
+        <module name="VisibilityModifier">
+            <property name="protectedAllowed" value="true"/>
+        </module>
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
