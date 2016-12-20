@@ -12,12 +12,18 @@ public class Game {
     private KeyboardInputListener playerStrategy = new KeyboardInputListener();
     private Strategy mobsStrategy = new RandomStrategy();
 
+    /**
+     * Callback for drawing UI.
+     */
     private Consumer<World> onRender = (world) -> {};
 
     public Game() throws FileNotFoundException {
         world = new World(new WorldMap(new File("src/main/resources/map.txt")));
     }
 
+    /**
+     * Runs the game.
+     */
     public void run() {
         while (world.getHero().isAlive()) {
             world.makeTurn(playerStrategy, mobsStrategy);

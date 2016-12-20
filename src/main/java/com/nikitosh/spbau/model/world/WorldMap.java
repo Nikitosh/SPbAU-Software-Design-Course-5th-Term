@@ -15,11 +15,20 @@ public class WorldMap {
     private int width;
     private CellType[][] cells;
 
+    /**
+     * Type of map's cell.
+     */
     public enum CellType {
         EMPTY,
         WALL
     };
 
+    /**
+     * Reads new map from file and creates the map according to conten.
+     *
+     * @param file file to read the map from.
+     * @throws FileNotFoundException
+     */
     public WorldMap(File file) throws FileNotFoundException {
         Scanner scanner = new Scanner(file);
         height = scanner.nextInt();
@@ -40,6 +49,13 @@ public class WorldMap {
         }
     }
 
+    /**
+     * Checks whether given cell is empty.
+     *
+     * @param x x-coordinate of cell.
+     * @param y y-coordinate of cell.
+     * @return whether cell is empty.
+     */
     public boolean isEmptyCell(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height && cells[y][x] == EMPTY;
     }

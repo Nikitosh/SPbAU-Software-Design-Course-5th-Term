@@ -8,7 +8,13 @@ import com.nikitosh.spbau.model.strategies.*;
 import java.util.*;
 
 public class World {
+    /**
+     * Number of mobs on the map at the start.
+     */
     private static final int MOBS_AMOUNT = 20;
+    /**
+     * Number of items on the map at the start.
+     */
     private static final int ITEMS_AMOUNT = 3;
 
     private WorldMap map;
@@ -20,18 +26,30 @@ public class World {
     private MobFactory mobFactory = new MobFactory();
     private ItemFactory itemFactory = new ItemFactory();
 
+    /**
+     * Creates new World according to given map.
+     * Generates hero, mobs and items.
+     *
+     * @param map world's map.
+     */
     public World(WorldMap map) {
         this.map = map;
         getEmptyPositions();
-        generateHero();
+        hero = generateHero();
         for (int i = 0; i < MOBS_AMOUNT; i++) {
-            generateMob();
+            mobs.add(generateMob());
         }
         for (int i = 0; i < ITEMS_AMOUNT; i++) {
-            generateItem();
+            items.add(generateItem());
         }
     }
 
+    /**
+     * Makes one turn of game.
+     *
+     * @param playerStrategy strategy which hero is using.
+     * @param mobsStrategy strategy which mobs are using.
+     */
     public void makeTurn(Strategy playerStrategy, Strategy mobsStrategy) {
         Movement heroMovement = playerStrategy.getMove(hero, this);
         hero.move(map, heroMovement);
@@ -50,6 +68,11 @@ public class World {
         return map;
     }
 
+    /**
+     * Returns all game objects.
+     *
+     * @return list of all game objects in the world at the moment, including hero, mobs and items.
+     */
     public List<GameObject> getGameObjects() {
         List<GameObject> gameObjects = new ArrayList<>();
         for (Item item : items) {
@@ -66,32 +89,44 @@ public class World {
         return hero;
     }
 
-    private void generateHero() {
+    /**
+     * Generates hero on some empty cell.
+     */
+    private Hero generateHero() {
         if (emptyPositions.isEmpty()) {
             throw new RuntimeException("No available cell for generating hero");
         }
         Position heroPosition = emptyPositions.get(random.nextInt(emptyPositions.size()));
-        hero = new Hero(heroPosition);
+        return new Hero(heroPosition);
     }
 
-    private void generateMob() {
+    /**
+     * Generates random mob on some empty cell.
+     */
+    private Mob generateMob() {
         List<Position> currentEmptyPositions = getCurrentEmptyPositions();
         if (currentEmptyPositions.isEmpty()) {
             throw new RuntimeException("No available cell for generating mob");
         }
         Position mobPosition = currentEmptyPositions.get(random.nextInt(currentEmptyPositions.size()));
-        mobs.add(mobFactory.createRandom(mobPosition, random));
+        return mobFactory.createRandom(mobPosition, random);
     }
 
-    private void generateItem() {
+    /**
+     * Generates random item on some empty cell.
+     */
+    private Item generateItem() {
         List<Position> currentEmptyPositions = getCurrentEmptyPositions();
         if (currentEmptyPositions.isEmpty()) {
             throw new RuntimeException("No available cell for generating item");
         }
         Position itemPosition = currentEmptyPositions.get(random.nextInt(currentEmptyPositions.size()));
-        items.add(itemFactory.createRandom(itemPosition, random));
+        return itemFactory.createRandom(itemPosition, random);
     }
 
+    /**
+     * Performs applying of items which are placed on same cell with hero.
+     */
     private void applyItems() {
         for (Item item : items) {
             if (hero.getPosition().equals(item.getPosition())) {
@@ -102,6 +137,9 @@ public class World {
         }
     }
 
+    /**
+     * Performs fights of hero with all mobs which are placed on same cell with him.
+     */
     private void fightWithMobs() {
         List<Mob> toRemoveMobs = new ArrayList<>();
         for (Mob mob : mobs) {
@@ -118,6 +156,11 @@ public class World {
         }
     }
 
+    /**
+     * Returns empty cells at the moment.
+     *
+     * @return list of empty positions on world's map (taking into account cells occupied by creatures and items).
+     */
     private List<Position> getCurrentEmptyPositions() {
         List<Position> currentEmptyPositions = new ArrayList<>();
         for (Position position : emptyPositions) {
@@ -142,6 +185,11 @@ public class World {
         return currentEmptyPositions;
     }
 
+    /**
+     * Returns empty cells.
+     *
+     * @return list of initial empty positions on world's map.
+     */
     private List<Position> getEmptyPositions() {
         emptyPositions = new ArrayList<>();
         for (int y = 0; y < map.getHeight(); y++) {
