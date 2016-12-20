@@ -54,7 +54,8 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
 
     /**
      * Just adds new key events to queue for handling (it will be handled when getMove will be performed).
-     * @param event
+     *
+     * @param event event causes by key pressing.
      */
     @Override
     public void keyPressed(KeyEvent event) {
