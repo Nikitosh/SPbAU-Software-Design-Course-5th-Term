@@ -11,6 +11,10 @@ import com.nikitosh.spbau.ui.visitors.*;
 import javax.swing.*;
 import java.util.*;
 
+/**
+ * Main frame with all game stuff there.
+ */
+
 public class GameFrame extends JFrame {
     private static final String FRAME_NAME = "Roguelike";
 
@@ -41,6 +45,9 @@ public class GameFrame extends JFrame {
     private static final char ITEM_ON = '+';
     private static final char ITEM_OFF = '-';
 
+    /**
+     * Panel, where map and hero and items attributes are drawing.
+     */
     private AsciiPanel panel;
     private DrawVisitor drawVisitor;
     private int mapWidth;
@@ -58,8 +65,8 @@ public class GameFrame extends JFrame {
         add(panel);
         setResizable(false);
         pack();
-        setLocationRelativeTo(null); //set JFrame to appear in center
-
+        //set JFrame to appear in center
+        setLocationRelativeTo(null);
 
         addKeyListener(game.getPlayerStrategy());
 
@@ -67,6 +74,11 @@ public class GameFrame extends JFrame {
         render(world);
     }
 
+    /**
+     * Draws whole world.
+     *
+     * @param world world to be drawn.
+     */
     private void render(World world) {
         panel.clear();
         drawVisitor.clear();
@@ -80,6 +92,11 @@ public class GameFrame extends JFrame {
         panel.repaint();
     }
 
+    /**
+     * Draws hero's attributes.
+     *
+     * @param hero hero whose attributes should be drawn.
+     */
     private void drawAttributes(Hero hero) {
         panel.setCursorPosition(mapWidth + 1, 0);
         panel.write(" HP: " + hero.getAttributes().getHealth());
@@ -89,6 +106,11 @@ public class GameFrame extends JFrame {
         panel.write("Def: " + hero.getAttributes().getDefense());
     }
 
+    /**
+     * Draws hero's inventory.
+     *
+     * @param hero hero whose inventory should be drawn.
+     */
     private void drawInventory(Hero hero) {
         int x = mapWidth + ATTRIBUTES_COLUMN_WIDTH;
         panel.setCursorPosition(x, 0);

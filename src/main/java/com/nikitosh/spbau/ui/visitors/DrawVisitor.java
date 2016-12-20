@@ -7,6 +7,10 @@ import com.nikitosh.spbau.model.world.*;
 
 import java.awt.*;
 
+/**
+ * Visitor which draw world's map.
+ */
+
 public class DrawVisitor implements Visitor {
     private static final char EMPTY_CELL_SYMBOL = '.';
     private static final char WALL_SYMBOL       = '#';
