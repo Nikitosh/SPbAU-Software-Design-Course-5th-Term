@@ -8,6 +8,9 @@ import static com.nikitosh.spbau.model.world.WorldMap.CellType.WALL;
 
 
 public class WorldMap {
+    private static final char EMPTY_SYMBOL = '.';
+    private static final char WALL_SYMBOL = '#';
+
     private int height;
     private int width;
     private CellType[][] cells;
@@ -26,9 +29,9 @@ public class WorldMap {
         for (int i = 0; i < height; i++) {
             String s = scanner.nextLine();
             for (int j = 0; j < width; j++) {
-                if (s.charAt(j) == '.') {
+                if (s.charAt(j) == EMPTY_SYMBOL) {
                     cells[i][j] = EMPTY;
-                } else if (s.charAt(j) == '#') {
+                } else if (s.charAt(j) == WALL_SYMBOL) {
                     cells[i][j] = WALL;
                 } else {
                     throw new RuntimeException("Invalid symbol in map occured");

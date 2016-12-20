@@ -51,13 +51,13 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
         if (MOVEMENTS.containsKey(symbol)) {
             return MOVEMENTS.get(symbol);
         }
-        if (isInventoryUsed(symbol)) {
+        if (isInventoryKey(symbol)) {
             hero.applyItemFromInventory(symbol - '1');
         }
         return null;
     }
 
-    private boolean isInventoryUsed(char symbol) {
+    private boolean isInventoryKey(char symbol) {
         return symbol >= '1' && symbol <= '9';
     }
 }
