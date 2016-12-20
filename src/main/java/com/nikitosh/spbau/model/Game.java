@@ -19,7 +19,7 @@ public class Game {
     }
 
     public void run() {
-        while (true) {
+        while (world.getHero().isAlive()) {
             world.makeTurn(playerStrategy, mobsStrategy);
             onRender.accept(world);
         }

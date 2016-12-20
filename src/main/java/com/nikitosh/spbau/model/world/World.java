@@ -1,25 +1,34 @@
 package com.nikitosh.spbau.model.world;
 
+import com.nikitosh.spbau.model.gameobjects.*;
 import com.nikitosh.spbau.model.gameobjects.creatures.*;
+import com.nikitosh.spbau.model.gameobjects.items.*;
 import com.nikitosh.spbau.model.strategies.*;
 
 import java.util.*;
 
 public class World {
-    private int MOB_AMOUNT = 3;
+    private static final int MOBS_AMOUNT = 20;
+    private static final int ITEMS_AMOUNT = 3;
+
     private WorldMap map;
     private Hero hero;
     private List<Mob> mobs = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
     private List<Position> emptyPositions;
     private Random random = new Random();
     private MobFactory mobFactory = new MobFactory();
+    private ItemFactory itemFactory = new ItemFactory();
 
     public World(WorldMap map) {
         this.map = map;
         getEmptyPositions();
         generateHero();
-        for (int i = 0; i < MOB_AMOUNT; i++) {
+        for (int i = 0; i < MOBS_AMOUNT; i++) {
             generateMob();
+        }
+        for (int i = 0; i < ITEMS_AMOUNT; i++) {
+            generateItem();
         }
     }
 
@@ -33,19 +42,28 @@ public class World {
         for (int i = 0; i < mobs.size(); i++) {
             mobs.get(i).move(map, mobsMovements.get(i));
         }
+        applyItems();
+        fightWithMobs();
     }
 
     public WorldMap getWorldMap() {
         return map;
     }
 
-    public List<Creature> getAllCreatures() {
-        List<Creature> allCreatures = new ArrayList<>();
-        for (Mob mob : mobs) {
-            allCreatures.add(mob);
+    public List<GameObject> getGameObjects() {
+        List<GameObject> gameObjects = new ArrayList<>();
+        for (Item item : items) {
+            gameObjects.add(item);
         }
-        allCreatures.add(hero);
-        return allCreatures;
+        for (Mob mob : mobs) {
+            gameObjects.add(mob);
+        }
+        gameObjects.add(hero);
+        return gameObjects;
+    }
+
+    public Hero getHero() {
+        return hero;
     }
 
     private void generateHero() {
@@ -57,6 +75,50 @@ public class World {
     }
 
     private void generateMob() {
+        List<Position> currentEmptyPositions = getCurrentEmptyPositions();
+        if (currentEmptyPositions.isEmpty()) {
+            throw new RuntimeException("No available cell for generating mob");
+        }
+        Position mobPosition = currentEmptyPositions.get(random.nextInt(currentEmptyPositions.size()));
+        mobs.add(mobFactory.createRandom(mobPosition, random));
+    }
+
+    private void generateItem() {
+        List<Position> currentEmptyPositions = getCurrentEmptyPositions();
+        if (currentEmptyPositions.isEmpty()) {
+            throw new RuntimeException("No available cell for generating item");
+        }
+        Position itemPosition = currentEmptyPositions.get(random.nextInt(currentEmptyPositions.size()));
+        items.add(itemFactory.createRandom(itemPosition, random));
+    }
+
+    private void applyItems() {
+        for (Item item : items) {
+            if (hero.getPosition().equals(item.getPosition())) {
+                hero.addItem(item);
+                items.remove(item);
+                break;
+            }
+        }
+    }
+
+    private void fightWithMobs() {
+        List<Mob> toRemoveMobs = new ArrayList<>();
+        for (Mob mob : mobs) {
+            if (hero.getPosition().equals(mob.getPosition())) {
+                hero.attack(mob);
+                mob.attack(hero);
+                if (!mob.isAlive()) {
+                    toRemoveMobs.add(mob);
+                }
+            }
+        }
+        for (Mob mob : toRemoveMobs) {
+            mobs.remove(mob);
+        }
+    }
+
+    private List<Position> getCurrentEmptyPositions() {
         List<Position> currentEmptyPositions = new ArrayList<>();
         for (Position position : emptyPositions) {
             boolean currentEmpty = true;
@@ -68,15 +130,16 @@ public class World {
                     currentEmpty = false;
                 }
             }
+            for (Item item : items) {
+                if (position.equals(item.getPosition())) {
+                    currentEmpty = false;
+                }
+            }
             if (currentEmpty) {
                 currentEmptyPositions.add(position);
             }
         }
-        if (currentEmptyPositions.isEmpty()) {
-            throw new RuntimeException("No available cell for generating mob");
-        }
-        Position mobPosition = currentEmptyPositions.get(random.nextInt(currentEmptyPositions.size()));
-        mobs.add(mobFactory.createRandom(mobPosition, random));
+        return currentEmptyPositions;
     }
 
     private List<Position> getEmptyPositions() {
