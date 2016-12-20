@@ -38,10 +38,7 @@ public class WorldMap {
     }
 
     public boolean isEmptyCell(int x, int y) {
-        if (x < 0 || x >= width || y < 0 || y >= height) {
-            throw new IndexOutOfBoundsException();
-        }
-        return cells[y][x] == EMPTY;
+        return x >= 0 && x < width && y >= 0 && y < height && cells[y][x] == EMPTY;
     }
 
     public int getHeight() {

@@ -12,9 +12,9 @@ public class Game {
     private KeyboardInputListener playerStrategy = new KeyboardInputListener();
     private Strategy mobsStrategy = new RandomStrategy();
 
-    public Consumer<World> onRender = (world) -> {};
+    private Consumer<World> onRender = (world) -> {};
 
-    public Game() throws FileNotFoundException{
+    public Game() throws FileNotFoundException {
         world = new World(new WorldMap(new File("src/main/resources/map.txt")));
     }
 

@@ -5,7 +5,9 @@ import com.nikitosh.spbau.ui.*;
 
 import java.io.*;
 
-public class Main {
+public final class Main {
+    private Main() {}
+
     public static void main(String[] args) {
         try {
             Game game = new Game();

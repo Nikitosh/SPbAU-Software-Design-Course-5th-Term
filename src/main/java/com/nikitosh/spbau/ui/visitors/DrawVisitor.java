@@ -25,10 +25,10 @@ public class DrawVisitor implements Visitor {
 
     private int height;
     private int width;
-    private char initialCells[][];
-    private char cells[][];
-    private Color initialColors[][];
-    private Color colors[][];
+    private char[][] initialCells;
+    private char[][] cells;
+    private Color[][] initialColors;
+    private Color[][] colors;
 
     public DrawVisitor(WorldMap map) {
         height = map.getHeight();

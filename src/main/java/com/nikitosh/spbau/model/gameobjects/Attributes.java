@@ -1,6 +1,6 @@
 package com.nikitosh.spbau.model.gameobjects;
 
-public class Attributes {
+public final class Attributes {
     private int health;
     private int attack;
     private int defense;
