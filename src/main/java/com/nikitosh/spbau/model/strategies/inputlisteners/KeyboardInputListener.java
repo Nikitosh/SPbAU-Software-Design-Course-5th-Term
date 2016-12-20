@@ -19,6 +19,7 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
 
     @Override
     public Movement getMove(Creature creature, World world) {
+        Hero hero = (Hero) creature;
         synchronized (pressedKeys) {
             while (true) {
                 while (pressedKeys.isEmpty()) {
@@ -29,7 +30,7 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
                     }
                 }
                 KeyEvent event = pressedKeys.remove();
-                Movement movement = processEvent(event);
+                Movement movement = processEvent(event, hero);
                 if (movement != null) {
                     return movement;
                 }
@@ -45,11 +46,18 @@ public class KeyboardInputListener extends KeyAdapter implements Strategy {
         }
     }
 
-    private Movement processEvent(KeyEvent event) {
+    private Movement processEvent(KeyEvent event, Hero hero) {
         char symbol = event.getKeyChar();
         if (MOVEMENTS.containsKey(symbol)) {
             return MOVEMENTS.get(symbol);
         }
+        if (isInventoryUsed(symbol)) {
+            hero.applyItemFromInventory(symbol - '1');
+        }
         return null;
+    }
+
+    private boolean isInventoryUsed(char symbol) {
+        return symbol >= '1' && symbol <= '9';
     }
 }
