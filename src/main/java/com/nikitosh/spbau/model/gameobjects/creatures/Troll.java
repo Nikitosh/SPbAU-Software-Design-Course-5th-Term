@@ -7,7 +7,8 @@ import com.nikitosh.spbau.ui.visitors.*;
 public class Troll extends Mob {
     private static final int HEALTH = 10;
     private static final int ATTACK = 2;
-    private static final Attributes ATTRIBUTES = new Attributes.Builder(HEALTH)
+    private static final Attributes ATTRIBUTES = new Attributes.Builder()
+            .health(HEALTH)
             .attack(ATTACK)
             .build();
 

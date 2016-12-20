@@ -7,17 +7,15 @@ public class Attributes {
 
     public static class Builder {
         /**
-         * Required parameters
-         */
-        private int health;
-        /**
          * Optional parameters
          */
+        private int health = 0;
         private int attack = 0;
         private int defense = 0;
 
-        public Builder(int health) {
+        public Builder health(int health) {
             this.health = health;
+            return this;
         }
 
         public Builder attack(int attack) {
@@ -39,5 +37,29 @@ public class Attributes {
         health = builder.health;
         attack = builder.attack;
         defense = builder.defense;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public void increaseHealth(int delta) {
+        health = Math.max(health + delta, 0);
+    }
+
+    public void increaseAttack(int delta) {
+        attack = Math.max(attack + delta, 0);
+    }
+
+    public void increaseDefense(int delta) {
+        defense = Math.max(defense + delta, 0);
     }
 }

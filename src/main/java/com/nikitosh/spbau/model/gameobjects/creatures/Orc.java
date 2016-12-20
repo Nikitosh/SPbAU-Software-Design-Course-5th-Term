@@ -8,7 +8,8 @@ public class Orc extends Mob {
     private static final int HEALTH = 5;
     private static final int ATTACK = 1;
     private static final int DEFENSE = 1;
-    private static final Attributes ATTRIBUTES = new Attributes.Builder(HEALTH)
+    private static final Attributes ATTRIBUTES = new Attributes.Builder()
+            .health(HEALTH)
             .attack(ATTACK)
             .defense(DEFENSE)
             .build();
