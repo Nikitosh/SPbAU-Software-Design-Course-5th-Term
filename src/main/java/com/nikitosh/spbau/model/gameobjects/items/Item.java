@@ -3,7 +3,6 @@ package com.nikitosh.spbau.model.gameobjects.items;
 import com.nikitosh.spbau.model.gameobjects.*;
 import com.nikitosh.spbau.model.world.*;
 
-
 /**
  * Class for different items in our game.
  * Hero can enable and disable item's features.

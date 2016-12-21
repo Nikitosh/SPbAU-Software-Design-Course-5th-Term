@@ -34,7 +34,7 @@ public class  Position {
     public void move(WorldMap map, Movement movement) {
         int newX = x + xShift[movement.ordinal()];
         int newY = y + yShift[movement.ordinal()];
-        if (map.isEmptyCell(newX, newY)) {
+        if (map.isCellEmpty(newX, newY)) {
             x = newX;
             y = newY;
         }

@@ -194,7 +194,7 @@ public class World {
         emptyPositions = new ArrayList<>();
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
-                if (map.isEmptyCell(x, y)) {
+                if (map.isCellEmpty(x, y)) {
                     emptyPositions.add(new Position(x, y));
                 }
             }

@@ -42,7 +42,7 @@ public class DrawVisitor implements Visitor {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 initialCells[y][x] = EMPTY_CELL_SYMBOL;
-                if (!map.isEmptyCell(x, y)) {
+                if (!map.isCellEmpty(x, y)) {
                     initialCells[y][x] = WALL_SYMBOL;
                 }
                 initialColors[y][x] = INITIAL_COLOR;
