@@ -6,6 +6,8 @@ package com.nikitosh.spbau.model.gameobjects;
  */
 
 public final class Attributes {
+    private static final int P = 239017;
+
     private int health;
     private int attack;
     private int defense;
@@ -81,5 +83,21 @@ public final class Attributes {
      */
     public void increaseDefense(int delta) {
         defense = Math.max(defense + delta, 0);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Attributes)) {
+            return false;
+        }
+        Attributes attributes = (Attributes) obj;
+        return health == attributes.health
+                && attack == attributes.attack
+                && defense == attributes.defense;
+    }
+
+    @Override
+    public int hashCode() {
+        return health * P * P + attack * P + defense;
     }
 }
