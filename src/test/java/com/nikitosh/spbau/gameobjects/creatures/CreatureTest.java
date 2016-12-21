@@ -17,39 +17,39 @@ public class CreatureTest {
     @Test
     public void testApplyItem() {
         Position creaturePosition = mock(Position.class);
-        Attributes creatureAttributes = TestUtils.createAttributes(10, 5, 5);
-        Creature creature = TestUtils.createCreature(creaturePosition, creatureAttributes);
+        Attributes creatureAttributes = TestUtilities.createAttributes(10, 5, 5);
+        Creature creature = TestUtilities.createCreature(creaturePosition, creatureAttributes);
 
         Position itemPosition = mock(Position.class);
-        Attributes itemAttributes = TestUtils.createAttributes(5, -1, 2);
-        Item item = TestUtils.createItem(itemPosition, itemAttributes);
+        Attributes itemAttributes = TestUtilities.createAttributes(5, -1, 2);
+        Item item = TestUtilities.createItem(itemPosition, itemAttributes);
 
         creature.applyItem(item, true);
-        assertEquals(TestUtils.createAttributes(15, 4, 7), creature.getAttributes());
+        assertEquals(TestUtilities.createAttributes(15, 4, 7), creature.getAttributes());
 
         creature.applyItem(item, false);
-        assertEquals(TestUtils.createAttributes(10, 5, 5), creature.getAttributes());
+        assertEquals(TestUtilities.createAttributes(10, 5, 5), creature.getAttributes());
     }
 
     @Test
     public void testAttack() {
         Position creaturePosition1 = mock(Position.class);
-        Attributes creatureAttributes1 = TestUtils.createAttributes(10, 5, 5);
-        Creature creature1 = TestUtils.createCreature(creaturePosition1, creatureAttributes1);
+        Attributes creatureAttributes1 = TestUtilities.createAttributes(10, 5, 5);
+        Creature creature1 = TestUtilities.createCreature(creaturePosition1, creatureAttributes1);
 
         Position creaturePosition2 = mock(Position.class);
-        Attributes creatureAttributes2 = TestUtils.createAttributes(10, 2, 3);
-        Creature creature2 = TestUtils.createCreature(creaturePosition2, creatureAttributes2);
+        Attributes creatureAttributes2 = TestUtilities.createAttributes(10, 2, 3);
+        Creature creature2 = TestUtilities.createCreature(creaturePosition2, creatureAttributes2);
 
         Position creaturePosition3 = mock(Position.class);
-        Attributes creatureAttributes3 = TestUtils.createAttributes(10, 0, 10);
-        Creature creature3 = TestUtils.createCreature(creaturePosition3, creatureAttributes3);
+        Attributes creatureAttributes3 = TestUtilities.createAttributes(10, 0, 10);
+        Creature creature3 = TestUtilities.createCreature(creaturePosition3, creatureAttributes3);
 
         creature1.attack(creature2);
-        assertEquals(TestUtils.createAttributes(8, 2, 3), creature2.getAttributes());
+        assertEquals(TestUtilities.createAttributes(8, 2, 3), creature2.getAttributes());
 
         creature1.attack(creature3);
-        assertEquals(TestUtils.createAttributes(10, 0, 10), creature3.getAttributes());
+        assertEquals(TestUtilities.createAttributes(10, 0, 10), creature3.getAttributes());
     }
 }
 

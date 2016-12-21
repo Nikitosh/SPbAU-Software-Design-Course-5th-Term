@@ -13,6 +13,7 @@ import static org.mockito.Mockito.mock;
 //CheckStyle:OFF: MagicNumber
 
 public class HeroTest {
+
     @Test
     public void testApplyItemFromInventory() {
         Position position = mock(Position.class);
@@ -25,7 +26,7 @@ public class HeroTest {
         Item item2 = TestUtilities.createItem(mock(Position.class), TestUtilities.createAttributes(2, 2, 2));
         hero.addItem(item1);
         hero.addItem(item2);
-        
+
         hero.applyItemFromInventory(2);
         assertEquals(TestUtilities.createAttributes(health, attack, defense), hero.getAttributes());
         hero.applyItemFromInventory(1);
